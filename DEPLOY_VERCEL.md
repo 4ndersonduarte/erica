@@ -7,12 +7,12 @@
    - Crie um repositório no GitHub.
    - Na pasta do projeto, execute:
    ```bash
-   git init
-   git add .
-   git commit -m "Deploy Vercel"
-   git branch -M main
-   git remote add origin https://github.com/SEU-USUARIO/erica-imoveis.git
-   git push -u origin main
+      git init
+      git add .
+      git commit -m "Deploy Vercel"
+      git branch -M main
+      git remote add origin https://github.com/SEU-USUARIO/erica-imoveis.git
+      git push -u origin main
    ```
 
 ## 2. Novo projeto na Vercel
@@ -21,8 +21,8 @@
 2. **Import Git Repository**: escolha o repositório do projeto (ex.: `erica-imoveis`).
 3. **Configure Project**:
    - **Framework Preset**: Next.js (já detectado).
-   - **Root Directory**: deixe em branco.
-   - **Build Command**: `next build` (padrão).
+   - **Root Directory**: deixe em branco (obrigatório: o app está em `src/app` na raiz do repo).
+   - **Build Command**: `npm run build` ou deixe o padrão (usa o script do `package.json`).
    - **Output Directory**: padrão.
    - **Install Command**: `npm install` (padrão).
 
@@ -62,3 +62,14 @@ Se preferir não usar o GitHub agora:
 ---
 
 **Dica:** O dashboard do admin usa a função `get_dashboard_stats()` no Supabase. Garanta que essa função existe no seu projeto Supabase para o painel carregar corretamente em produção.
+
+---
+
+## Erro: "Couldn't find any \`pages\` or \`app\` directory"
+
+Se o build falhar com essa mensagem:
+
+1. No painel da Vercel, vá em **Settings** → **General**.
+2. Em **Root Directory**, deixe **vazio** (ou `.`) para que o build rode na raiz do repositório, onde estão `package.json` e a pasta `src` (com `src/app`).
+3. Se o seu repositório tiver o app dentro de uma subpasta (ex.: pasta `erica` ou `Erica`), coloque **só o nome dessa pasta** em Root Directory (ex.: `Erica`).
+4. Salve e faça **Redeploy** (Deployments → ⋮ → Redeploy).
