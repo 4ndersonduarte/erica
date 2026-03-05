@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  body {
+    @apply text-ink antialiased;
+  }
+}
+
+@layer utilities {
+  .container-custom {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-10;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Focus visible para acessibilidade */
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-accent;
+}
+
+/* Galeria do imóvel */
+.property-gallery img {
+  @apply object-cover w-full h-full;
+}
+
+/* Transições suaves em links */
+a {
+  @apply transition-colors duration-200;
+}
