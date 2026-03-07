@@ -8,7 +8,6 @@ import SearchForm from '@/components/SearchForm';
 import PropertyCard from '@/components/PropertyCard';
 import { MessageCircle, ArrowRight, User, Megaphone } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
-import { MOCK_PROPERTIES } from '@/lib/mock-properties';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,8 +41,6 @@ async function getFeaturedProperties() {
 
 export default async function HomePage() {
   const { items: featured } = await getFeaturedProperties();
-  const displayItems = featured.length > 0 ? featured : MOCK_PROPERTIES;
-  const isMock = featured.length === 0;
 
   return (
     <>
@@ -88,15 +85,13 @@ export default async function HomePage() {
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
               <div>
                 <p className="text-sm font-semibold tracking-wide text-accent uppercase">
-                  {isMock ? 'Exemplos' : 'Destaques'}
+                  Destaques
                 </p>
                 <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-ink tracking-tight">
-                  {isMock ? 'Imóveis de exemplo' : 'Imóveis em destaque'}
+                  Imóveis em destaque
                 </h2>
                 <p className="mt-2 text-ink-muted max-w-lg">
-                  {isMock
-                    ? 'Confira nossa seleção de imóveis para ter uma ideia do que oferecemos.'
-                    : 'Confira nossa seleção especial de imóveis.'}
+                  Confira nossa seleção especial de imóveis.
                 </p>
               </div>
               <Link
@@ -108,14 +103,18 @@ export default async function HomePage() {
               </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {displayItems.slice(0, 6).map((p: Record<string, unknown>) => (
+              {featured.slice(0, 6).map((p: Record<string, unknown>) => (
                 <PropertyCard
                   key={String(p.id)}
                   property={p as Parameters<typeof PropertyCard>[0]['property']}
-                  hrefOverride={isMock ? '/imoveis' : undefined}
                 />
               ))}
             </div>
+            {featured.length === 0 && (
+              <p className="text-center text-ink-muted py-8">
+                Nenhum imóvel em destaque no momento. <Link href="/imoveis" className="text-accent font-medium hover:underline">Ver todos os imóveis</Link> ou cadastre no painel admin.
+              </p>
+            )}
           </div>
         </section>
 

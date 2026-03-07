@@ -46,7 +46,7 @@ function getUrls(senha) {
   return [
     { nome: 'Conexão direta (porta 5432)', url: `postgresql://postgres:${p}@db.${PROJECT_REF}.supabase.co:5432/postgres?connect_timeout=10` },
     { nome: 'Pooler Session (porta 5432)', url: `postgresql://postgres.${PROJECT_REF}:${p}@aws-1-sa-east-1.pooler.supabase.com:5432/postgres?connect_timeout=10` },
-    { nome: 'Pooler Transaction (porta 6543)', url: `postgresql://postgres.${PROJECT_REF}:${p}@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?connect_timeout=10` },
+    { nome: 'Pooler Transaction (porta 6543)', url: `postgresql://postgres.${PROJECT_REF}:${p}@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connect_timeout=10` },
   ];
 }
 

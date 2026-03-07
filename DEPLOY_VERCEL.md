@@ -45,13 +45,13 @@ Em **Settings → Environment Variables** adicione:
 Na Vercel **não** use a conexão direta (porta 5432). Use o **pooler** (porta 6543):
 
 ```
-postgresql://postgres.dkkmzjskxlqclpvmkjzv:SUA_SENHA@aws-1-sa-east-1.pooler.supabase.com:6543/postgres
+postgresql://postgres.dkkmzjskxlqclpvmkjzv:SUA_SENHA@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true
 ```
 
 - Troque `SUA_SENHA` pela senha do banco (Supabase → Settings → Database).
 - Se a senha tiver `@`, use `%40` (ex.: `Timaonaveia123@` → `Timaonaveia123%40`).
 
-Ou copie em Supabase → **Settings → Database** a connection string **Transaction** (porta 6543) e cole no valor de `DATABASE_URL`.
+Se copiar do Supabase, **adicione no final da URL** `?pgbouncer=true` (obrigatório para o Prisma funcionar com o pooler).
 
 - Marque **Production**, **Preview** e **Development** para cada variável (ou só Production).
 
