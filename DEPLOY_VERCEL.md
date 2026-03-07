@@ -35,7 +35,9 @@ Em **Environment Variables** adicione (use os mesmos valores do seu `.env` local
 | `DATABASE_URL` | URI do PostgreSQL (Supabase) | Supabase → Settings → Database → Connection string (URI), porta 6543 |
 | `JWT_SECRET` | Uma string longa e aleatória | Mesma que você usa no `.env` local |
 | `NEXT_PUBLIC_APP_URL` | **https://seu-projeto.vercel.app** | Será a URL do site na Vercel (ajuste depois do 1º deploy) |
-| `NEXT_PUBLIC_WHATSAPP` | Número com DDI, ex: 5511999999999 | Seu WhatsApp |
+| `NEXT_PUBLIC_WHATSAPP_ERICA` | Número Erica com DDI, ex: 5538984212207 | WhatsApp (Erica) |
+| `NEXT_PUBLIC_WHATSAPP_TERRA_BOA` | Número Terra Boa com DDI | WhatsApp (Terra Boa) |
+| `NEXT_PUBLIC_WHATSAPP` | Fallback (opcional) | Se não usar os dois acima |
 | `NEXT_PUBLIC_SUPABASE_URL` | https://dkkmzjskxlqclpvmkjzv.supabase.co | Supabase → Settings → API |
 | `SUPABASE_ANON_KEY` | Chave `anon` do projeto | Supabase → Settings → API → Project API keys |
 
@@ -60,6 +62,10 @@ Se preferir não usar o GitHub agora:
 4. Adicione as variáveis de ambiente no painel da Vercel (Settings → Environment Variables) e rode `vercel --prod` para deploy de produção.
 
 ---
+
+**Dois WhatsApps:** Use `NEXT_PUBLIC_WHATSAPP_ERICA` (ex.: 5538984212207) e `NEXT_PUBLIC_WHATSAPP_TERRA_BOA` (número que você definir). O botão flutuante e as seções de contato oferecem as duas opções.
+
+**Banco:** Se o projeto já tinha banco antes da atualização com o campo "tópico", rode `npx prisma db push` (ou aplique a migração que adiciona a coluna `topic`) para que o cadastro de imóveis funcione.
 
 **Dica:** O dashboard do admin usa a função `get_dashboard_stats()` no Supabase. Garanta que essa função existe no seu projeto Supabase para o painel carregar corretamente em produção.
 

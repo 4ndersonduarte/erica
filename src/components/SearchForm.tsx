@@ -4,20 +4,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { Search } from 'lucide-react';
 
-const purposeOptions = [
-  { value: '', label: 'Venda ou Aluguel' },
-  { value: 'VENDA', label: 'Venda' },
-  { value: 'ALUGUEL', label: 'Aluguel' },
-];
-
 const inputClass =
   'w-full rounded-xl border border-cream-border bg-white px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-shadow';
 
 export default function SearchForm({ compact = false }: { compact?: boolean }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [purpose, setPurpose] = useState(searchParams.get('purpose') || '');
-  const [city, setCity] = useState(searchParams.get('city') || '');
   const [neighborhood, setNeighborhood] = useState(searchParams.get('neighborhood') || '');
   const [minValue, setMinValue] = useState(searchParams.get('minValue') || '');
   const [maxValue, setMaxValue] = useState(searchParams.get('maxValue') || '');
@@ -25,8 +17,6 @@ export default function SearchForm({ compact = false }: { compact?: boolean }) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams();
-    if (purpose) params.set('purpose', purpose);
-    if (city) params.set('city', city);
     if (neighborhood) params.set('neighborhood', neighborhood);
     if (minValue) params.set('minValue', minValue);
     if (maxValue) params.set('maxValue', maxValue);
@@ -37,22 +27,6 @@ export default function SearchForm({ compact = false }: { compact?: boolean }) {
     return (
       <form onSubmit={handleSubmit} className="w-full">
         <div className="flex flex-col sm:flex-row gap-3">
-          <select
-            value={purpose}
-            onChange={(e) => setPurpose(e.target.value)}
-            className={`${inputClass} sm:w-40`}
-          >
-            {purposeOptions.map((o) => (
-              <option key={o.value || 'all'} value={o.value}>{o.label}</option>
-            ))}
-          </select>
-          <input
-            type="text"
-            placeholder="Cidade"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            className={`${inputClass} sm:w-36`}
-          />
           <input
             type="text"
             placeholder="Bairro"
@@ -90,23 +64,7 @@ export default function SearchForm({ compact = false }: { compact?: boolean }) {
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-        <select
-          value={purpose}
-          onChange={(e) => setPurpose(e.target.value)}
-          className={inputClass}
-        >
-          {purposeOptions.map((o) => (
-            <option key={o.value || 'all'} value={o.value}>{o.label}</option>
-          ))}
-        </select>
-        <input
-          type="text"
-          placeholder="Cidade"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          className={inputClass}
-        />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <input
           type="text"
           placeholder="Bairro"
@@ -132,7 +90,7 @@ export default function SearchForm({ compact = false }: { compact?: boolean }) {
         />
         <button
           type="submit"
-          className="flex items-center justify-center gap-2 rounded-xl bg-ink text-white px-6 py-3 text-sm font-semibold hover:bg-ink-light transition-colors"
+          className="flex items-center justify-center gap-2 rounded-xl bg-ink text-white px-6 py-3 text-sm font-semibold hover:bg-ink-light transition-colors sm:col-span-2"
         >
           <Search size={18} strokeWidth={2} />
           Buscar

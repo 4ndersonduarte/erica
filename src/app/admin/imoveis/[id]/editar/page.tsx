@@ -20,6 +20,7 @@ export default async function EditarImovelPage({
 
   const initial = {
     ...property,
+    topic: property.topic === 'CASAS_XACARAS' ? 'CHACARAS' : property.topic,
     imageUrls: property.images.map((i) => i.url),
   };
 

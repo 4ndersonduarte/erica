@@ -23,6 +23,7 @@ model Property {
   slug        String       @unique
   title       String
   type        String
+  topic       String       @default("TERRENOS") // TERRENOS | CASAS | FAZENDAS | CHACARAS
   purpose     String
   value       Float
   city        String

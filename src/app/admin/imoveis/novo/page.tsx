@@ -9,7 +9,7 @@ export default async function NovoImovelPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-dark-900">Novo imóvel</h1>
-      <p className="mt-1 text-dark-600">Preencha os dados do imóvel</p>
+      <p className="mt-1 text-dark-600">Cadastre terrenos, casas, chácaras ou fazendas. Preencha os dados abaixo.</p>
       <PropertyForm />
     </div>
   );

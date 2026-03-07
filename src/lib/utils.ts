@@ -24,6 +24,15 @@ export const PROPERTY_TYPE_LABELS: Record<string, string> = {
   COMERCIAL: 'Comercial',
 };
 
+/** Tópicos: Terrenos, Casas, Fazendas, Chácaras */
+export const PROPERTY_TOPIC_LABELS: Record<string, string> = {
+  TERRENOS: 'Terrenos',
+  CASAS: 'Casas',
+  FAZENDAS: 'Fazendas',
+  CHACARAS: 'Chácaras',
+  CASAS_XACARAS: 'Chácaras', // legado
+};
+
 export const PROPERTY_PURPOSE_LABELS: Record<string, string> = {
   VENDA: 'Venda',
   ALUGUEL: 'Aluguel',

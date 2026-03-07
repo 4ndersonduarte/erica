@@ -1,8 +1,9 @@
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 import { getSession } from '@/lib/auth';
 import { getSupabaseAdmin } from '@/lib/supabase-server';
 import { prisma } from '@/lib/prisma';
-import { Home, TrendingUp, Key, CheckCircle } from 'lucide-react';
+import { Home, TrendingUp, Key, CheckCircle, Plus } from 'lucide-react';
 
 async function getStats(): Promise<{ total: number; forSale: number; forRent: number; sold: number; rented: number }> {
   const supabase = getSupabaseAdmin();
@@ -40,8 +41,19 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-dark-900">Dashboard</h1>
-      <p className="mt-1 text-dark-600">Visão geral dos imóveis</p>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-dark-900">Dashboard</h1>
+          <p className="mt-1 text-dark-600">Visão geral dos imóveis</p>
+        </div>
+        <Link
+          href="/admin/imoveis/novo"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-500 text-white px-5 py-3.5 font-semibold hover:bg-primary-600 transition min-h-[48px] shadow-md"
+        >
+          <Plus size={22} />
+          Cadastrar novo imóvel
+        </Link>
+      </div>
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {cards.map(({ label, value, icon: Icon, color }) => (
           <div

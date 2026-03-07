@@ -33,31 +33,17 @@ export default function AdminPropertyActions({
     }
   };
 
+  const btnClass = 'min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-dark-600 transition touch-manipulation';
   return (
-    <div className="flex items-center gap-2">
-      <Link
-        href={`/admin/imoveis/${id}/editar`}
-        className="p-2 rounded-lg text-dark-600 hover:bg-primary-100 hover:text-primary-800"
-        title="Editar"
-      >
-        <Pencil size={18} />
+    <div className="flex items-center gap-1">
+      <Link href={`/admin/imoveis/${id}/editar`} className={`${btnClass} hover:bg-primary-100 hover:text-primary-800`} title="Editar">
+        <Pencil size={20} />
       </Link>
-      <a
-        href={`/imoveis/${slug}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="p-2 rounded-lg text-dark-600 hover:bg-dark-100"
-        title="Ver no site"
-      >
-        <ExternalLink size={18} />
+      <a href={`/imoveis/${slug}`} target="_blank" rel="noopener noreferrer" className={`${btnClass} hover:bg-dark-100`} title="Ver no site">
+        <ExternalLink size={20} />
       </a>
-      <button
-        type="button"
-        onClick={handleDelete}
-        className="p-2 rounded-lg text-dark-600 hover:bg-red-100 hover:text-red-700"
-        title="Excluir"
-      >
-        <Trash2 size={18} />
+      <button type="button" onClick={handleDelete} className={`${btnClass} hover:bg-red-100 hover:text-red-700`} title="Excluir">
+        <Trash2 size={20} />
       </button>
     </div>
   );

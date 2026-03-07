@@ -20,8 +20,7 @@ export default async function ImoveisPage({ searchParams }: Props) {
   let data: Awaited<ReturnType<typeof getPublicPropertiesList>>;
   try {
     data = await getPublicPropertiesList({
-      purpose: params.purpose,
-      city: params.city,
+      tipo: params.tipo,
       neighborhood: params.neighborhood,
       minValue: params.minValue,
       maxValue: params.maxValue,

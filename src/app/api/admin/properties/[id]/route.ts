@@ -57,6 +57,7 @@ export async function PUT(
         slug,
         title: data.title,
         type: data.type,
+        topic: data.topic,
         purpose: data.purpose,
         value: data.value,
         city: data.city,

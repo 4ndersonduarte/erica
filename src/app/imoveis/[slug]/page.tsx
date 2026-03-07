@@ -55,11 +55,14 @@ export default async function PropertyPage({ params }: Props) {
   const property = await getProperty(slug);
   if (!property) notFound();
 
-  const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP || '5511999999999';
+  const whatsappErica = process.env.NEXT_PUBLIC_WHATSAPP_ERICA ?? '5538984212207';
+  const whatsappTerraBoa = process.env.NEXT_PUBLIC_WHATSAPP_TERRA_BOA || process.env.NEXT_PUBLIC_WHATSAPP || '5538984212207';
   const msg = encodeURIComponent(
     `Olá! Tenho interesse no imóvel ${property.code} - ${property.title}`
   );
-  const whatsappUrl = `https://wa.me/${whatsapp.replace(/\D/g, '')}?text=${msg}`;
+  const clean = (n: string) => n.replace(/\D/g, '');
+  const whatsappUrlErica = `https://wa.me/${clean(whatsappErica)}?text=${msg}`;
+  const whatsappUrlTerraBoa = `https://wa.me/${clean(whatsappTerraBoa)}?text=${msg}`;
 
   return (
     <>
@@ -109,15 +112,26 @@ export default async function PropertyPage({ params }: Props) {
                 </span>
               </div>
 
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-10 flex items-center justify-center gap-2 w-full rounded-xl bg-ink text-white py-4 font-semibold hover:bg-ink-light transition-colors"
-              >
-                <MessageCircle size={22} strokeWidth={1.5} />
-                Contato via WhatsApp
-              </a>
+              <div className="mt-10 flex flex-col sm:flex-row gap-3">
+                <a
+                  href={whatsappUrlErica}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 flex-1 rounded-xl bg-[#25D366] text-white py-4 font-semibold hover:bg-[#20bd5a] transition-colors"
+                >
+                  <MessageCircle size={22} strokeWidth={1.5} />
+                  WhatsApp (Erica)
+                </a>
+                <a
+                  href={whatsappUrlTerraBoa}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 flex-1 rounded-xl bg-ink text-white py-4 font-semibold hover:bg-ink-light transition-colors"
+                >
+                  <MessageCircle size={22} strokeWidth={1.5} />
+                  WhatsApp (Terra Boa)
+                </a>
+              </div>
             </div>
           </div>
 

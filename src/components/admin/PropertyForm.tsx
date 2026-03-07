@@ -10,17 +10,20 @@ import {
   PROPERTY_TYPE_LABELS,
   PROPERTY_PURPOSE_LABELS,
   PROPERTY_STATUS_LABELS,
+  PROPERTY_TOPIC_LABELS,
 } from '@/lib/utils';
 
 const types = Object.entries(PROPERTY_TYPE_LABELS).map(([value, label]) => ({ value, label }));
 const purposes = Object.entries(PROPERTY_PURPOSE_LABELS).map(([value, label]) => ({ value, label }));
 const statuses = Object.entries(PROPERTY_STATUS_LABELS).map(([value, label]) => ({ value, label }));
+const topics = Object.entries(PROPERTY_TOPIC_LABELS).map(([value, label]) => ({ value, label }));
 
 type PropertyWithImages = {
   id?: string;
   code: string;
   title: string;
   type: string;
+  topic: string;
   purpose: string;
   value: number;
   city: string;
@@ -50,6 +53,7 @@ export default function PropertyForm({ initial }: Props) {
   const [form, setForm] = useState({
     title: initial?.title || '',
     type: initial?.type || 'CASA',
+    topic: initial?.topic || 'TERRENOS',
     purpose: initial?.purpose || 'VENDA',
     value: initial?.value ?? 0,
     city: initial?.city || '',
@@ -140,254 +144,108 @@ export default function PropertyForm({ initial }: Props) {
     }
   };
 
+  const inputClass = 'mt-1.5 w-full rounded-xl border border-dark-200 px-4 py-3 text-base min-h-[48px] focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none';
+  const labelClass = 'block text-sm font-medium text-dark-700';
+
   return (
-    <form onSubmit={handleSubmit} className="mt-8 max-w-3xl space-y-6">
-      <div className="rounded-xl bg-white border border-dark-200 p-6 space-y-4">
-        <h2 className="font-semibold text-dark-900">Informações básicas</h2>
-        {initial?.code && (
-          <p className="text-sm text-dark-500">Código: {initial.code}</p>
-        )}
+    <form onSubmit={handleSubmit} className="mt-6 sm:mt-8 max-w-3xl space-y-6">
+      <div className="rounded-2xl bg-white border border-dark-200 p-5 sm:p-6 space-y-5 shadow-sm">
+        <h2 className="text-lg font-semibold text-dark-900">Informações básicas</h2>
+        {initial?.code && <p className="text-sm text-dark-500">Código: {initial.code}</p>}
         <div>
-          <label className="block text-sm font-medium text-dark-700">Título *</label>
-          <input
-            type="text"
-            value={form.title}
-            onChange={(e) => update('title', e.target.value)}
-            required
-            className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5"
-          />
+          <label className={labelClass}>Título *</label>
+          <input type="text" value={form.title} onChange={(e) => update('title', e.target.value)} required className={inputClass} />
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-dark-700">Tipo *</label>
-            <select
-              value={form.type}
-              onChange={(e) => update('type', e.target.value)}
-              className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5"
-            >
-              {types.map((t) => (
-                <option key={t.value} value={t.value}>{t.label}</option>
-              ))}
+            <label className={labelClass}>Tipo *</label>
+            <select value={form.type} onChange={(e) => update('type', e.target.value)} className={inputClass}>
+              {types.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-dark-700">Finalidade *</label>
-            <select
-              value={form.purpose}
-              onChange={(e) => update('purpose', e.target.value)}
-              className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5"
-            >
-              {purposes.map((p) => (
-                <option key={p.value} value={p.value}>{p.label}</option>
-              ))}
+            <label className={labelClass}>Tópico *</label>
+            <select value={form.topic} onChange={(e) => update('topic', e.target.value)} className={inputClass}>
+              {topics.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className={labelClass}>Finalidade *</label>
+            <select value={form.purpose} onChange={(e) => update('purpose', e.target.value)} className={inputClass}>
+              {purposes.map((p) => <option key={p.value} value={p.value}>{p.label}</option>)}
             </select>
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-dark-700">Valor (R$) *</label>
-          <input
-            type="number"
-            step="0.01"
-            min="0"
-            value={form.value || ''}
-            onChange={(e) => update('value', e.target.value)}
-            required
-            className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5"
-          />
+          <label className={labelClass}>Valor (R$) *</label>
+          <input type="number" step="0.01" min={0} value={form.value || ''} onChange={(e) => update('value', e.target.value)} required className={inputClass} inputMode="decimal" />
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-dark-700">Status</label>
-            <select
-              value={form.status}
-              onChange={(e) => update('status', e.target.value)}
-              className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5"
-            >
-              {statuses.map((s) => (
-                <option key={s.value} value={s.value}>{s.label}</option>
-              ))}
+            <label className={labelClass}>Status</label>
+            <select value={form.status} onChange={(e) => update('status', e.target.value)} className={inputClass}>
+              {statuses.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
             </select>
           </div>
-          <div className="flex items-center gap-2 pt-8">
-            <input
-              type="checkbox"
-              id="featured"
-              checked={form.featured}
-              onChange={(e) => update('featured', e.target.checked)}
-              className="rounded border-dark-300"
-            />
-            <label htmlFor="featured" className="text-sm font-medium text-dark-700">
-              Imóvel em destaque
-            </label>
+          <div className="flex items-center gap-3 min-h-[48px]">
+            <input type="checkbox" id="featured" checked={form.featured} onChange={(e) => update('featured', e.target.checked)} className="rounded border-dark-300 w-5 h-5" />
+            <label htmlFor="featured" className="text-sm font-medium text-dark-700">Imóvel em destaque</label>
           </div>
         </div>
       </div>
 
-      <div className="rounded-xl bg-white border border-dark-200 p-6 space-y-4">
-        <h2 className="font-semibold text-dark-900">Localização</h2>
-        <div>
-          <label className="block text-sm font-medium text-dark-700">Cidade *</label>
-          <input
-            type="text"
-            value={form.city}
-            onChange={(e) => update('city', e.target.value)}
-            required
-            className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-dark-700">Bairro *</label>
-          <input
-            type="text"
-            value={form.neighborhood}
-            onChange={(e) => update('neighborhood', e.target.value)}
-            required
-            className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-dark-700">Endereço *</label>
-          <input
-            type="text"
-            value={form.address}
-            onChange={(e) => update('address', e.target.value)}
-            required
-            className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5"
-          />
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-dark-700">Latitude (mapa)</label>
-            <input
-              type="text"
-              value={form.lat}
-              onChange={(e) => update('lat', e.target.value)}
-              placeholder="-23.5505"
-              className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-dark-700">Longitude (mapa)</label>
-            <input
-              type="text"
-              value={form.lng}
-              onChange={(e) => update('lng', e.target.value)}
-              placeholder="-46.6333"
-              className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5"
-            />
-          </div>
+      <div className="rounded-2xl bg-white border border-dark-200 p-5 sm:p-6 space-y-5 shadow-sm">
+        <h2 className="text-lg font-semibold text-dark-900">Localização</h2>
+        <div><label className={labelClass}>Cidade *</label><input type="text" value={form.city} onChange={(e) => update('city', e.target.value)} required className={inputClass} /></div>
+        <div><label className={labelClass}>Bairro *</label><input type="text" value={form.neighborhood} onChange={(e) => update('neighborhood', e.target.value)} required className={inputClass} /></div>
+        <div><label className={labelClass}>Endereço *</label><input type="text" value={form.address} onChange={(e) => update('address', e.target.value)} required className={inputClass} /></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div><label className={labelClass}>Latitude (mapa)</label><input type="text" value={form.lat} onChange={(e) => update('lat', e.target.value)} placeholder="-23.5505" className={inputClass} inputMode="decimal" /></div>
+          <div><label className={labelClass}>Longitude (mapa)</label><input type="text" value={form.lng} onChange={(e) => update('lng', e.target.value)} placeholder="-46.6333" className={inputClass} inputMode="decimal" /></div>
         </div>
       </div>
 
-      <div className="rounded-xl bg-white border border-dark-200 p-6 space-y-4">
-        <h2 className="font-semibold text-dark-900">Características</h2>
+      <div className="rounded-2xl bg-white border border-dark-200 p-5 sm:p-6 space-y-5 shadow-sm">
+        <h2 className="text-lg font-semibold text-dark-900">Características</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-dark-700">Quartos</label>
-            <input
-              type="number"
-              min="0"
-              value={form.rooms}
-              onChange={(e) => update('rooms', e.target.value)}
-              className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-dark-700">Banheiros</label>
-            <input
-              type="number"
-              min="0"
-              value={form.bathrooms}
-              onChange={(e) => update('bathrooms', e.target.value)}
-              className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-dark-700">Vagas</label>
-            <input
-              type="number"
-              min="0"
-              value={form.parking}
-              onChange={(e) => update('parking', e.target.value)}
-              className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-dark-700">Área (m²) *</label>
-            <input
-              type="number"
-              step="0.01"
-              min="0"
-              value={form.area || ''}
-              onChange={(e) => update('area', e.target.value)}
-              required
-              className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5"
-            />
-          </div>
+          <div><label className={labelClass}>Quartos</label><input type="number" min={0} value={form.rooms} onChange={(e) => update('rooms', e.target.value)} className={inputClass} /></div>
+          <div><label className={labelClass}>Banheiros</label><input type="number" min={0} value={form.bathrooms} onChange={(e) => update('bathrooms', e.target.value)} className={inputClass} /></div>
+          <div><label className={labelClass}>Vagas</label><input type="number" min={0} value={form.parking} onChange={(e) => update('parking', e.target.value)} className={inputClass} /></div>
+          <div><label className={labelClass}>Área (m²) *</label><input type="number" step="0.01" min={0} value={form.area || ''} onChange={(e) => update('area', e.target.value)} required className={inputClass} inputMode="decimal" /></div>
         </div>
       </div>
 
-      <div className="rounded-xl bg-white border border-dark-200 p-6 space-y-4">
-        <h2 className="font-semibold text-dark-900">Descrição *</h2>
-        <textarea
-          value={form.description}
-          onChange={(e) => update('description', e.target.value)}
-          required
-          rows={5}
-          className="w-full rounded-lg border border-dark-200 px-4 py-2.5"
-        />
+      <div className="rounded-2xl bg-white border border-dark-200 p-5 sm:p-6 space-y-4 shadow-sm">
+        <h2 className="text-lg font-semibold text-dark-900">Descrição *</h2>
+        <textarea value={form.description} onChange={(e) => update('description', e.target.value)} required rows={5} className="w-full rounded-xl border border-dark-200 px-4 py-3 text-base min-h-[120px] focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none" />
       </div>
 
-      <div className="rounded-xl bg-white border border-dark-200 p-6 space-y-4">
-        <h2 className="font-semibold text-dark-900">Imagens</h2>
+      <div className="rounded-2xl bg-white border border-dark-200 p-5 sm:p-6 space-y-4 shadow-sm">
+        <h2 className="text-lg font-semibold text-dark-900">Imagens</h2>
         <div className="flex flex-wrap gap-3">
           {imageUrls.map((url, i) => (
-            <div key={i} className="relative group w-24 h-24 rounded-lg border border-dark-200 overflow-hidden">
-              <Image
-                src={url}
-                alt=""
-                width={96}
-                height={96}
-                className="object-cover"
-              />
-              <button
-                type="button"
-                onClick={() => removeImage(i)}
-                className="absolute -top-2 -right-2 p-1 rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition"
-              >
-                <X size={14} />
+            <div key={i} className="relative group w-24 h-24 sm:w-28 sm:h-28 rounded-xl border border-dark-200 overflow-hidden">
+              <Image src={url} alt="" width={112} height={112} className="object-cover w-full h-full" />
+              <button type="button" onClick={() => removeImage(i)} className="absolute top-1 right-1 p-1.5 rounded-full bg-red-500 text-white shadow touch-manipulation" aria-label="Remover">
+                <X size={16} />
               </button>
             </div>
           ))}
-          <label className="w-24 h-24 flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-dark-200 hover:border-primary-500 cursor-pointer text-dark-500 hover:text-primary-600">
-            <Upload size={24} />
+          <label className="w-24 h-24 sm:w-28 sm:h-28 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-dark-200 hover:border-primary-500 cursor-pointer text-dark-500 hover:text-primary-600 transition min-h-[96px]">
+            <Upload size={28} />
             <span className="text-xs mt-1">{uploading ? 'Enviando...' : 'Adicionar'}</span>
-            <input
-              type="file"
-              accept="image/jpeg,image/png,image/webp"
-              multiple
-              className="hidden"
-              onChange={handleFileUpload}
-              disabled={uploading}
-            />
+            <input type="file" accept="image/jpeg,image/png,image/webp" multiple className="hidden" onChange={handleFileUpload} disabled={uploading} />
           </label>
         </div>
       </div>
 
-      <div className="flex gap-3">
-        <button
-          type="submit"
-          disabled={loading}
-          className="rounded-lg bg-primary-800 text-white px-6 py-2.5 font-medium hover:bg-primary-900 transition disabled:opacity-50"
-        >
-          {loading ? 'Salvando...' : initial?.id ? 'Atualizar' : 'Cadastrar'}
-        </button>
-        <Link
-          href="/admin/imoveis"
-          className="rounded-lg border border-dark-200 px-6 py-2.5 font-medium text-dark-700 hover:bg-dark-50 transition"
-        >
+      <div className="flex flex-col-reverse sm:flex-row gap-3 pb-8">
+        <Link href="/admin/imoveis" className="rounded-xl border-2 border-dark-200 px-6 py-3.5 font-medium text-dark-700 hover:bg-dark-50 transition text-center min-h-[48px] flex items-center justify-center">
           Cancelar
         </Link>
+        <button type="submit" disabled={loading} className="rounded-xl bg-primary-500 text-white px-6 py-3.5 font-semibold hover:bg-primary-600 transition disabled:opacity-50 min-h-[48px] shadow-md">
+          {loading ? 'Salvando...' : initial?.id ? 'Atualizar' : 'Cadastrar imóvel'}
+        </button>
       </div>
     </form>
   );

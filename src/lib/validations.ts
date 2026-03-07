@@ -8,8 +8,9 @@ export const loginSchema = z.object({
 export const propertySchema = z.object({
   title: z.string().min(3, 'Título deve ter pelo menos 3 caracteres'),
   type: z.enum(['CASA', 'APARTAMENTO', 'TERRENO', 'COMERCIAL']),
+  topic: z.enum(['TERRENOS', 'CASAS', 'FAZENDAS', 'CHACARAS']),
   purpose: z.enum(['VENDA', 'ALUGUEL']),
-  value: z.number().positive('Valor deve ser positivo'),
+  value: z.number().min(0.01, 'Informe o valor do imóvel (R$)'),
   city: z.string().min(2, 'Cidade obrigatória'),
   neighborhood: z.string().min(2, 'Bairro obrigatório'),
   address: z.string().min(5, 'Endereço obrigatório'),

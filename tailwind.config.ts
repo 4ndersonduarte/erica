@@ -10,10 +10,10 @@ const config: Config = {
     extend: {
       colors: {
         ink: {
-          DEFAULT: '#0f0f0f',
-          light: '#1a1a1a',
-          muted: '#525252',
-          subtle: '#737373',
+          DEFAULT: '#0a2653',
+          light: '#0d2f66',
+          muted: '#3d5a80',
+          subtle: '#5c7a9e',
         },
         cream: {
           DEFAULT: '#fafaf9',
@@ -21,23 +21,23 @@ const config: Config = {
           border: '#e7e5e4',
         },
         accent: {
-          DEFAULT: '#0d5c4a',
-          hover: '#0a4a3b',
-          light: '#e8f2f0',
-          muted: '#134e3e',
+          DEFAULT: '#fe6212',
+          hover: '#e5560f',
+          light: '#fff0e8',
+          muted: '#c94e0e',
         },
         gold: {
-          DEFAULT: '#b45309',
-          light: '#fef3c7',
+          DEFAULT: '#fe6212',
+          light: '#fff0e8',
         },
         /* Admin / compat */
         primary: {
-          100: '#e8f2f0',
-          500: '#0d5c4a',
-          600: '#0a4a3b',
-          700: '#0a4a3b',
-          800: '#0d5c4a',
-          900: '#0a4a3b',
+          100: '#fff0e8',
+          500: '#fe6212',
+          600: '#e5560f',
+          700: '#c94e0e',
+          800: '#0a2653',
+          900: '#0a2653',
         },
         dark: {
           50: '#fafaf9',

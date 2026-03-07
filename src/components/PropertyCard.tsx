@@ -9,6 +9,7 @@ type Property = {
   slug: string;
   title: string;
   type: string;
+  topic?: string;
   purpose: string;
   value: number;
   city: string;

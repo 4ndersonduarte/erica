@@ -3,8 +3,7 @@ import { prisma } from '@/lib/prisma';
 const PAGE_SIZE = 12;
 
 type Filters = {
-  purpose?: string | null;
-  city?: string | null;
+  tipo?: string | null; // TERRENOS | CASAS | FAZENDAS | CHACARAS
   neighborhood?: string | null;
   minValue?: string | null;
   maxValue?: string | null;
@@ -17,8 +16,8 @@ type Filters = {
 };
 
 export async function getPublicPropertiesList(filters: Filters) {
-  const purpose = filters.purpose || undefined;
-  const city = filters.city || undefined;
+  let topic = filters.tipo || undefined;
+  if (topic === 'CASAS_XACARAS') topic = 'CHACARAS'; // legado
   const neighborhood = filters.neighborhood || undefined;
   const minValue = filters.minValue;
   const maxValue = filters.maxValue;
@@ -32,8 +31,7 @@ export async function getPublicPropertiesList(filters: Filters) {
   const where: Record<string, unknown> = {
     status: 'AVAILABLE',
   };
-  if (purpose) where.purpose = purpose;
-  if (city) where.city = { contains: city, mode: 'insensitive' };
+  if (topic) where.topic = topic;
   if (neighborhood) where.neighborhood = { contains: neighborhood, mode: 'insensitive' };
   const valueFilter: { gte?: number; lte?: number } = {};
   if (minValue != null && minValue !== '') valueFilter.gte = Number(minValue);

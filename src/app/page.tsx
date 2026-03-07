@@ -3,13 +3,23 @@ import Image from 'next/image';
 import { Suspense } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import SearchForm from '@/components/SearchForm';
 import PropertyCard from '@/components/PropertyCard';
-import { MessageCircle, ArrowRight } from 'lucide-react';
+import { MessageCircle, ArrowRight, User, Megaphone } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 import { MOCK_PROPERTIES } from '@/lib/mock-properties';
 
 export const dynamic = 'force-dynamic';
+
+// Erica: (38) 98421-2207 → 5538984212207 (não usar NEXT_PUBLIC_WHATSAPP genérico para não cair em 11 99999...)
+const whatsappErica = process.env.NEXT_PUBLIC_WHATSAPP_ERICA ?? '5538984212207';
+const whatsappTerraBoa = process.env.NEXT_PUBLIC_WHATSAPP_TERRA_BOA || process.env.NEXT_PUBLIC_WHATSAPP || '5538984212207';
+
+function cleanWa(n: string) {
+  return n.replace(/\D/g, '');
+}
+const msgErica = encodeURIComponent('Olá! Vim pelo site da Erica Imóveis e gostaria de mais informações.');
 
 async function getFeaturedProperties() {
   try {
@@ -35,8 +45,6 @@ export default async function HomePage() {
   const displayItems = featured.length > 0 ? featured : MOCK_PROPERTIES;
   const isMock = featured.length === 0;
 
-  const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP || '5511999999999';
-
   return (
     <>
       <Header />
@@ -56,13 +64,13 @@ export default async function HomePage() {
           </div>
           <div className="container-custom relative z-10">
             <p className="text-sm font-semibold tracking-wide text-white/80 uppercase mb-4">
-              Imobiliária de confiança
+              Parceria Erica Imóveis e Terra Boa
             </p>
             <h1 className="text-hero sm:text-display font-bold text-white tracking-tight max-w-3xl text-balance">
               Encontre o imóvel ideal para você
             </h1>
             <p className="mt-6 text-lg text-white/90 max-w-xl leading-relaxed">
-              Casas, apartamentos e terrenos para venda e aluguel. Atendimento personalizado e transparência.
+              Terrenos, casas, fazendas e chácaras. Atendimento personalizado e transparência.
             </p>
             <div className="mt-10 max-w-4xl">
               <div className="rounded-2xl bg-white/95 backdrop-blur-sm p-4 sm:p-5 shadow-elevated border border-white/20">
@@ -111,18 +119,95 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Sobre */}
+        {/* Por que escolher a Imobiliária Terra Boa? */}
+        <section id="porque-terra-boa" className="py-20 sm:py-28 bg-white border-y border-cream-border">
+          <div className="container-custom">
+            <p className="text-sm font-semibold tracking-wide text-accent uppercase">Por que nos escolher</p>
+            <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-ink tracking-tight">
+              Por que escolher a Imobiliária Terra Boa?
+            </h2>
+            <ul className="mt-8 grid sm:grid-cols-2 gap-4 max-w-2xl list-none">
+              <li className="flex items-start gap-3 text-ink-muted leading-relaxed">
+                <span className="text-accent font-bold">•</span>
+                Atendimento personalizado
+              </li>
+              <li className="flex items-start gap-3 text-ink-muted leading-relaxed">
+                <span className="text-accent font-bold">•</span>
+                Oportunidades selecionadas
+              </li>
+              <li className="flex items-start gap-3 text-ink-muted leading-relaxed">
+                <span className="text-accent font-bold">•</span>
+                Segurança na negociação
+              </li>
+              <li className="flex items-start gap-3 text-ink-muted leading-relaxed">
+                <span className="text-accent font-bold">•</span>
+                Conhecimento do mercado local
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        {/* Não encontrou o imóvel + CTAs */}
+        <section className="py-20 sm:py-28 bg-cream">
+          <div className="container-custom text-center">
+            <h2 className="text-3xl sm:text-4xl font-bold text-ink tracking-tight">
+              Não encontrou o imóvel que procura?
+            </h2>
+            <p className="mt-4 text-ink-muted max-w-xl mx-auto">
+              Nossa equipe pode te ajudar a encontrar a melhor oportunidade.
+            </p>
+            <div className="mt-10 flex flex-wrap justify-center gap-4">
+              <a
+                href={`https://wa.me/${cleanWa(whatsappErica)}?text=${msgErica}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] text-white px-6 py-4 text-sm font-semibold hover:bg-[#20bd5a] transition-colors"
+              >
+                <MessageCircle size={22} strokeWidth={1.5} />
+                WhatsApp
+              </a>
+              <a
+                href={`https://wa.me/${cleanWa(whatsappTerraBoa)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl bg-ink text-white px-6 py-4 text-sm font-semibold hover:bg-ink-light transition-colors"
+              >
+                <User size={22} strokeWidth={1.5} />
+                Falar com corretor
+              </a>
+              <Link
+                href="/admin/login"
+                className="inline-flex items-center gap-2 rounded-xl border-2 border-accent text-accent px-6 py-4 text-sm font-semibold hover:bg-accent-light transition-colors"
+              >
+                <Megaphone size={22} strokeWidth={1.5} />
+                Anunciar meu imóvel
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Sobre Terra Boa */}
         <section id="sobre" className="py-20 sm:py-28 bg-white border-y border-cream-border">
           <div className="container-custom">
-            <div className="max-w-2xl">
-              <p className="text-sm font-semibold tracking-wide text-accent uppercase">Sobre</p>
-              <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-ink tracking-tight">
-                Atendimento personalizado
-              </h2>
-              <p className="mt-6 text-ink-muted leading-relaxed text-lg">
-                Com anos de experiência no mercado imobiliário, ofereço um atendimento focado em você
-                para encontrar o imóvel ideal, seja para venda ou aluguel. Trabalho com transparência
-                e dedicação para realizar o seu objetivo.
+            <p className="text-sm font-semibold tracking-wide text-accent uppercase">Sobre</p>
+            <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-ink tracking-tight">
+              Sobre a Imobiliária Terra Boa
+            </h2>
+            <div className="mt-6 max-w-2xl space-y-4 text-ink-muted leading-relaxed text-lg">
+              <p>
+                A Imobiliária Terra Boa nasceu com o propósito de conectar pessoas às melhores oportunidades do mercado imobiliário.
+              </p>
+              <p>
+                Trabalhamos com dedicação para oferecer imóveis que atendam às necessidades de quem deseja comprar, vender, alugar ou investir com segurança e tranquilidade.
+              </p>
+              <p>
+                Nosso compromisso é proporcionar um atendimento transparente, responsável e próximo, ajudando cada cliente a encontrar o imóvel ideal ou realizar um bom negócio.
+              </p>
+              <p>
+                Com conhecimento do mercado e atenção aos detalhes, buscamos sempre apresentar oportunidades reais e imóveis selecionados, garantindo mais confiança em cada negociação.
+              </p>
+              <p>
+                Seja para morar, investir ou vender seu imóvel, a Imobiliária Terra Boa está pronta para ajudar você a dar o próximo passo com segurança.
               </p>
             </div>
           </div>
@@ -137,15 +222,26 @@ export default async function HomePage() {
             <p className="mt-4 text-stone-400 max-w-md mx-auto">
               Tire dúvidas ou agende uma visita pelo WhatsApp.
             </p>
-            <a
-              href={`https://wa.me/${whatsapp.replace(/\D/g, '')}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white text-ink px-8 py-4 text-sm font-semibold hover:bg-cream transition-colors"
-            >
-              <MessageCircle size={22} strokeWidth={1.5} />
-              Chamar no WhatsApp
-            </a>
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
+              <a
+                href={`https://wa.me/${cleanWa(whatsappErica)}?text=${msgErica}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl bg-white text-ink px-6 py-4 text-sm font-semibold hover:bg-cream transition-colors"
+              >
+                <MessageCircle size={22} strokeWidth={1.5} />
+                WhatsApp (Erica)
+              </a>
+              <a
+                href={`https://wa.me/${cleanWa(whatsappTerraBoa)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl bg-accent text-white px-6 py-4 text-sm font-semibold hover:bg-accent-hover transition-colors"
+              >
+                <MessageCircle size={22} strokeWidth={1.5} />
+                WhatsApp (Terra Boa)
+              </a>
+            </div>
           </div>
         </section>
       </main>

@@ -52,10 +52,14 @@ NEXT_PUBLIC_WHATSAPP="5511999999999"
 
 3. Rode `npx prisma db push` (ou `prisma migrate deploy` se usar migrations).
 
+## Admin (simples)
+
+Um login (e-mail/senha do seed). Quem loga em `/admin` pode fazer qualquer alteração; tudo é salvo direto no banco. Sem níveis de permissão — só precisa estar oculto. Ver `ADMIN.md`.
+
 ## Estrutura
 
 - **Site público:** `/` (início), `/imoveis` (listagem), `/imoveis/[slug]` (imóvel)
-- **Painel admin:** `/admin/login`, `/admin/dashboard`, `/admin/imoveis` (CRUD)
+- **Painel admin:** `/admin` → login, dashboard, imóveis (CRUD)
 - **API:** `/api/auth/*`, `/api/properties`, `/api/admin/*`
 
 ## Deploy

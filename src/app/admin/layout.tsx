@@ -13,7 +13,7 @@ export default async function AdminLayout({
       {session ? (
         <>
           <AdminNav />
-          <main className="container-custom py-8">{children}</main>
+          <main className="container-custom py-6 sm:py-8 px-4 sm:px-6 max-w-5xl mx-auto">{children}</main>
         </>
       ) : (
         <main>{children}</main>
