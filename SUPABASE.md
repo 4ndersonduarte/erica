@@ -15,7 +15,7 @@ O projeto está conectado ao Supabase. As tabelas já foram criadas na migration
 4. No projeto Erica, crie ou edite o `.env`:
 
 ```env
-DATABASE_URL="postgresql://postgres.dkkmzjskxlqclpvmkjzv:[SUA-SENHA]@aws-0-us-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+DATABASE_URL="postgresql://postgres.dkkmzjskxlqclpvmkjzv:[SUA-SENHA]@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
 ```
 
 Para rodar migrations com Prisma, use a **conexão direta** (porta 5432):

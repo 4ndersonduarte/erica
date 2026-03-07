@@ -28,21 +28,32 @@
 
 ## 3. Variáveis de ambiente
 
-Em **Environment Variables** adicione (use os mesmos valores do seu `.env` local):
+Em **Settings → Environment Variables** adicione:
 
-| Nome | Valor | Onde achar |
-|------|--------|------------|
-| `DATABASE_URL` | URI do PostgreSQL (Supabase) | Supabase → Settings → Database → Connection string (URI), porta 6543 |
-| `JWT_SECRET` | Uma string longa e aleatória | Mesma que você usa no `.env` local |
-| `NEXT_PUBLIC_APP_URL` | **https://seu-projeto.vercel.app** | Será a URL do site na Vercel (ajuste depois do 1º deploy) |
-| `NEXT_PUBLIC_WHATSAPP_ERICA` | Número Erica com DDI, ex: 5538984212207 | WhatsApp (Erica) |
-| `NEXT_PUBLIC_WHATSAPP_TERRA_BOA` | Número Terra Boa com DDI | WhatsApp (Terra Boa) |
-| `NEXT_PUBLIC_WHATSAPP` | Fallback (opcional) | Se não usar os dois acima |
-| `NEXT_PUBLIC_SUPABASE_URL` | https://dkkmzjskxlqclpvmkjzv.supabase.co | Supabase → Settings → API |
-| `SUPABASE_ANON_KEY` | Chave `anon` do projeto | Supabase → Settings → API → Project API keys |
+| Nome | Valor | Obrigatório |
+|------|--------|-------------|
+| **`DATABASE_URL`** | Ver quadro abaixo (pooler, porta 6543) | **Sim** |
+| `JWT_SECRET` | Uma string longa e aleatória | Sim |
+| `NEXT_PUBLIC_APP_URL` | https://seu-projeto.vercel.app (ajuste depois do 1º deploy) | Sim |
+| `NEXT_PUBLIC_SUPABASE_URL` | https://dkkmzjskxlqclpvmkjzv.supabase.co | Sim (para upload de fotos) |
+| `SUPABASE_ANON_KEY` | Chave **anon** em Supabase → Settings → API | Sim (para upload de fotos) |
+| `NEXT_PUBLIC_WHATSAPP_ERICA` | 5538984212207 | Recomendado |
+| `NEXT_PUBLIC_WHATSAPP_TERRA_BOA` | Número Terra Boa com DDI | Opcional |
 
-- Marque **Production**, **Preview** e **Development** para cada variável (ou só Production se quiser).
-- **Importante:** na senha do banco, se tiver `@`, use `%40` (ex.: `minhasenha%40abc`).
+### DATABASE_URL na Vercel (obrigatório: pooler)
+
+Na Vercel **não** use a conexão direta (porta 5432). Use o **pooler** (porta 6543):
+
+```
+postgresql://postgres.dkkmzjskxlqclpvmkjzv:SUA_SENHA@aws-1-sa-east-1.pooler.supabase.com:6543/postgres
+```
+
+- Troque `SUA_SENHA` pela senha do banco (Supabase → Settings → Database).
+- Se a senha tiver `@`, use `%40` (ex.: `Timaonaveia123@` → `Timaonaveia123%40`).
+
+Ou copie em Supabase → **Settings → Database** a connection string **Transaction** (porta 6543) e cole no valor de `DATABASE_URL`.
+
+- Marque **Production**, **Preview** e **Development** para cada variável (ou só Production).
 
 Depois de salvar, clique em **Deploy**.
 
@@ -66,6 +77,8 @@ Se preferir não usar o GitHub agora:
 **Dois WhatsApps:** Use `NEXT_PUBLIC_WHATSAPP_ERICA` (ex.: 5538984212207) e `NEXT_PUBLIC_WHATSAPP_TERRA_BOA` (número que você definir). O botão flutuante e as seções de contato oferecem as duas opções.
 
 **Banco:** Se o projeto já tinha banco antes da atualização com o campo "tópico", rode `npx prisma db push` (ou aplique a migração que adiciona a coluna `topic`) para que o cadastro de imóveis funcione.
+
+**Upload de fotos:** O bucket `property-images` no Supabase Storage já está criado. Basta ter `NEXT_PUBLIC_SUPABASE_URL` e `SUPABASE_ANON_KEY` (ou `SUPABASE_SERVICE_ROLE_KEY`) nas variáveis da Vercel para o upload funcionar.
 
 **Dica:** O dashboard do admin usa a função `get_dashboard_stats()` no Supabase. Garanta que essa função existe no seu projeto Supabase para o painel carregar corretamente em produção.
 
