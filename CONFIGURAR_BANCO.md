@@ -22,19 +22,23 @@ E tente cadastrar o imóvel de novo.
 
 ---
 
-## Opção 2: Manual
+## Opção 2: Manual (use o pooler, não a porta 5432)
 
-1. Abra: **https://supabase.com/dashboard/project/dkkmzjskxlqclpvmkjzv/settings/database**
-2. Em **Connection string**, escolha **URI**.
-3. Copie a URL e troque `[YOUR-PASSWORD]` pela senha do banco.  
-   Se a senha tiver `@` ou `#`, troque por `%40` ou `%23`.
-4. No projeto, abra o arquivo **`.env`** e deixe só uma linha assim (com a URL que você colou):
+A conexão **direta** (porta 5432) costuma falhar no seu computador com *"Can't reach database server"*. Use sempre o **pooler** (porta 6543):
+
+1. Abra o arquivo **`.env`** na raiz do projeto.
+2. Deixe a **`DATABASE_URL`** exatamente assim (trocando `SUA_SENHA` pela senha do banco do Supabase):
 
    ```
-   DATABASE_URL="postgresql://..."
+   DATABASE_URL="postgresql://postgres.dkkmzjskxlqclpvmkjzv:SUA_SENHA@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
    ```
 
-5. Salve, reinicie o servidor (`npm run dev`) e teste de novo.
+   - Usuário é **`postgres.dkkmzjskxlqclpvmkjzv`** (com o ponto e o id do projeto).
+   - Host é **`aws-1-sa-east-1.pooler.supabase.com`**, porta **6543**.
+   - No **final** da URL tem que ter **`?pgbouncer=true`**.
+   - Se a senha tiver `@` ou `#`, use `%40` ou `%23` no lugar.
+
+3. Salve o `.env`, reinicie o servidor (`npm run dev`) e tente de novo (login/cadastro/imóveis).
 
 ---
 

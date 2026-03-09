@@ -3,14 +3,17 @@ import { cookies } from 'next/headers';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-dev-secret';
 
+export type AuthRole = 'admin' | 'user';
+
 export interface JWTPayload {
   sub: string;
   email: string;
+  role?: AuthRole;
   iat?: number;
   exp?: number;
 }
 
-export function signToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): string {
+export function signToken(payload: Omit<JWTPayload, 'iat' | 'exp'> & { role?: AuthRole }): string {
   return jwt.sign(
     payload,
     JWT_SECRET,
@@ -33,10 +36,10 @@ export async function getSession(): Promise<JWTPayload | null> {
   return verifyToken(token);
 }
 
-export async function requireAuth(): Promise<JWTPayload> {
+/** Exige login; se adminOnly, só administradores acessam (role === 'user' bloqueado). */
+export async function requireAuth(adminOnly = true): Promise<JWTPayload> {
   const session = await getSession();
-  if (!session) {
-    throw new Error('Unauthorized');
-  }
+  if (!session) throw new Error('Unauthorized');
+  if (adminOnly && session.role === 'user') throw new Error('Unauthorized');
   return session;
 }

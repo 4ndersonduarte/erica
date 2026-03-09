@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
 const navMain = [
@@ -21,8 +22,57 @@ const topicos = [
 ];
 
 export default function Header() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [topicosOpen, setTopicosOpen] = useState(false);
+  const [session, setSession] = useState<{ role?: string } | null>(null);
+
+  useEffect(() => {
+    fetch('/api/auth/me', { credentials: 'include' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setSession(data ?? null))
+      .catch(() => setSession(null));
+  }, []);
+
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+    setSession(null);
+    setOpen(false);
+    router.refresh();
+  };
+
+  const hasSession = session != null;
+  const isAdmin = session?.role === 'admin';
+
+  const authLink = (
+    hasSession ? (
+      <>
+        {isAdmin && (
+          <Link
+            href="/admin/dashboard"
+            className="text-sm font-medium text-accent hover:text-accent-hover transition-colors"
+          >
+            Painel
+          </Link>
+        )}
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="text-sm font-medium text-ink-muted hover:text-accent transition-colors"
+        >
+          Sair
+        </button>
+      </>
+    ) : (
+      <Link
+        href="/admin/login"
+        className="text-sm font-medium text-ink-muted hover:text-accent transition-colors"
+      >
+        Entrar
+      </Link>
+    )
+  );
+
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-cream-border">
       <div className="container-custom flex min-h-[96px] items-center justify-between py-2">
@@ -69,12 +119,7 @@ export default function Header() {
               </>
             )}
           </div>
-          <Link
-            href="/admin/login"
-            className="text-sm font-medium text-ink-muted hover:text-accent transition-colors"
-          >
-            Entrar
-          </Link>
+          {authLink}
         </nav>
         <button
           type="button"
@@ -109,13 +154,32 @@ export default function Header() {
                 {t.label}
               </Link>
             ))}
-            <Link
-              href="/admin/login"
-              className="pt-4 text-sm font-medium text-ink-muted hover:text-accent"
-              onClick={() => setOpen(false)}
-            >
-              Entrar
-            </Link>
+            {isAdmin && (
+              <Link
+                href="/admin/dashboard"
+                className="pt-4 text-sm font-medium text-accent hover:text-accent-hover"
+                onClick={() => setOpen(false)}
+              >
+                Painel
+              </Link>
+            )}
+            {hasSession ? (
+              <button
+                type="button"
+                onClick={() => { handleLogout(); setOpen(false); }}
+                className="pt-4 text-sm font-medium text-ink-muted hover:text-accent text-left"
+              >
+                Sair
+              </button>
+            ) : (
+              <Link
+                href="/admin/login"
+                className="pt-4 text-sm font-medium text-ink-muted hover:text-accent"
+                onClick={() => setOpen(false)}
+              >
+                Entrar
+              </Link>
+            )}
           </nav>
         </div>
       )}

@@ -45,25 +45,36 @@ export async function POST(request: NextRequest) {
     const { email, password } = parsed.data;
 
     const admin = await findAdminByEmail(email);
+    if (admin) {
+      const valid = await bcrypt.compare(password, admin.password);
+      if (!valid) return apiError("E-mail ou senha incorretos", 401);
+      const token = signToken({ sub: admin.id, email: admin.email, role: "admin" });
+      const response = apiSuccess({ token, email: admin.email, role: "admin" });
+      response.cookies.set("admin_token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 7,
+        path: "/",
+      });
+      return response;
+    }
 
-    if (!admin) {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      return apiError("E-mail ou senha incorretos", 401);
+    }
+    const validUser = await bcrypt.compare(password, user.password);
+    if (!validUser) {
       return apiError("E-mail ou senha incorretos", 401);
     }
 
-    const valid = await bcrypt.compare(password, admin.password);
-
-    if (!valid) {
-      return apiError("E-mail ou senha incorretos", 401);
-    }
-
-    const token = signToken({
-      sub: admin.id,
-      email: admin.email,
-    });
+    const token = signToken({ sub: user.id, email: user.email, role: "user" });
 
     const response = apiSuccess({
       token,
-      email: admin.email,
+      email: user.email,
+      role: "user",
     });
 
     response.cookies.set("admin_token", token, {
@@ -73,7 +84,6 @@ export async function POST(request: NextRequest) {
       maxAge: 60 * 60 * 24 * 7,
       path: "/",
     });
-
     return response;
   } catch (error) {
     console.error("Login error:", error);

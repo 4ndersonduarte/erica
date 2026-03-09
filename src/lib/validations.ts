@@ -5,6 +5,12 @@ export const loginSchema = z.object({
   password: z.string().min(1, 'Senha obrigatória'),
 });
 
+export const registerSchema = z.object({
+  name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres').optional().or(z.literal('')),
+  email: z.string().email('E-mail inválido'),
+  password: z.string().min(6, 'Senha deve ter pelo menos 6 caracteres'),
+});
+
 export const propertySchema = z.object({
   title: z.string().min(3, 'Título deve ter pelo menos 3 caracteres'),
   type: z.enum(['CASA', 'APARTAMENTO', 'TERRENO', 'COMERCIAL']),

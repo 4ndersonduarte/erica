@@ -1,12 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Facebook, Instagram, Linkedin } from 'lucide-react';
+import { Instagram } from 'lucide-react';
 
-const social = [
-  { icon: Facebook, href: '#', label: 'Facebook' },
-  { icon: Instagram, href: '#', label: 'Instagram' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
-];
+const INSTAGRAM_USER = 'ericaviana.imoveis_';
+const instagramUrl = `https://instagram.com/${INSTAGRAM_USER}`;
 
 export default function Footer() {
   return (
@@ -21,20 +18,15 @@ export default function Footer() {
               Parceria Erica Imóveis e Terra Boa — atendimento personalizado para encontrar o imóvel ideal.
             </p>
           </div>
-          <div className="flex gap-3">
-            {social.map(({ icon: Icon, href, label }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 rounded-full border border-stone-600 text-stone-400 hover:text-white hover:border-stone-500 transition-colors"
-                aria-label={label}
-              >
-                <Icon size={18} strokeWidth={1.5} />
-              </a>
-            ))}
-          </div>
+          <a
+            href={instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2.5 rounded-full border border-stone-600 text-stone-400 hover:text-white hover:border-stone-500 transition-colors"
+            aria-label="Instagram"
+          >
+            <Instagram size={18} strokeWidth={1.5} />
+          </a>
         </div>
         <div className="mt-12 pt-8 border-t border-stone-800 text-center text-stone-500 text-sm">
           © {new Date().getFullYear()} Erica Imóveis em parceria com Terra Boa. Todos os direitos reservados.

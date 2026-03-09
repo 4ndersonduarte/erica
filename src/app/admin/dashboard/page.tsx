@@ -45,6 +45,12 @@ export default async function DashboardPage() {
         <div>
           <h1 className="text-2xl font-bold text-dark-900">Dashboard</h1>
           <p className="mt-1 text-dark-600">Visão geral dos imóveis</p>
+          <Link
+            href="/"
+            className="mt-2 inline-block text-sm font-medium text-primary-600 hover:text-primary-700 hover:underline"
+          >
+            ← Ir para a home do site
+          </Link>
         </div>
         <Link
           href="/admin/imoveis/novo"
