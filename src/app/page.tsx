@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import SearchForm from '@/components/SearchForm';
 import PropertyCard from '@/components/PropertyCard';
+import HomeVideoCarousel from '@/components/HomeVideoCarousel';
 import { MessageCircle, ArrowRight, User, Megaphone } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
 
@@ -39,8 +40,21 @@ async function getFeaturedProperties() {
   }
 }
 
+async function getHomeVideos() {
+  try {
+    return await prisma.homeVideo.findMany({
+      orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],
+    });
+  } catch {
+    return [];
+  }
+}
+
 export default async function HomePage() {
-  const { items: featured } = await getFeaturedProperties();
+  const [{ items: featured }, videos] = await Promise.all([
+    getFeaturedProperties(),
+    getHomeVideos(),
+  ]);
 
   return (
     <>
@@ -78,6 +92,22 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+
+        {/* Vídeos de apresentação (formato stories 9:16) */}
+        {videos.length > 0 && (
+          <section className="py-16 sm:py-24 bg-white border-y border-cream-border">
+            <div className="container-custom">
+              <p className="text-sm font-semibold tracking-wide text-accent uppercase">Vídeos</p>
+              <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-ink tracking-tight">
+                Conheça nossos imóveis
+              </h2>
+              <p className="mt-2 text-ink-muted max-w-lg">
+                Vídeos de apresentação com detalhes dos imóveis e da região.
+              </p>
+              <HomeVideoCarousel videos={videos} />
+            </div>
+          </section>
+        )}
 
         {/* Destaques / Exemplos */}
         <section className="py-20 sm:py-28 bg-cream">

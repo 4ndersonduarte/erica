@@ -10,6 +10,7 @@ export default async function EditarImovelPage({
 }) {
   const session = await getSession();
   if (!session) redirect('/admin/login');
+  if (session.role === 'user') redirect('/');
 
   const { id } = await params;
   const property = await prisma.property.findUnique({

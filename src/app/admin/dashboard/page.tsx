@@ -28,6 +28,7 @@ async function getStats(): Promise<{ total: number; forSale: number; forRent: nu
 export default async function DashboardPage() {
   const session = await getSession();
   if (!session) redirect('/admin/login');
+  if (session.role === 'user') redirect('/');
 
   const stats = await getStats();
 
@@ -52,13 +53,21 @@ export default async function DashboardPage() {
             ← Ir para a home do site
           </Link>
         </div>
-        <Link
-          href="/admin/imoveis/novo"
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-500 text-white px-5 py-3.5 font-semibold hover:bg-primary-600 transition min-h-[48px] shadow-md"
-        >
-          <Plus size={22} />
-          Cadastrar novo imóvel
-        </Link>
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/admin/videos"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-dark-200 px-5 py-3.5 font-semibold text-dark-700 hover:bg-dark-50 transition min-h-[48px]"
+          >
+            Vídeos da home
+          </Link>
+          <Link
+            href="/admin/imoveis/novo"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-500 text-white px-5 py-3.5 font-semibold hover:bg-primary-600 transition min-h-[48px] shadow-md"
+          >
+            <Plus size={22} />
+            Cadastrar novo imóvel
+          </Link>
+        </div>
       </div>
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {cards.map(({ label, value, icon: Icon, color }) => (

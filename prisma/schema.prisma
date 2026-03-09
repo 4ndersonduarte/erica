@@ -60,3 +60,11 @@ model PropertyImage {
   order      Int      @default(0)
 }
 
+model HomeVideo {
+  id        String   @id @default(cuid())
+  url       String
+  title     String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+

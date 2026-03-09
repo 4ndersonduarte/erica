@@ -80,6 +80,8 @@ Se preferir não usar o GitHub agora:
 
 **Upload de fotos:** O bucket `property-images` no Supabase Storage já está criado. Basta ter `NEXT_PUBLIC_SUPABASE_URL` e `SUPABASE_ANON_KEY` (ou `SUPABASE_SERVICE_ROLE_KEY`) nas variáveis da Vercel para o upload funcionar.
 
+**Vídeos da home:** Para o admin poder enviar vídeos de apresentação, crie no Supabase o bucket **`home-videos`**: em **Storage** → **New bucket** → nome `home-videos`, marque como **público** (public). Assim o upload de vídeos no painel e a exibição na home funcionarão.
+
 **Dica:** O dashboard do admin usa a função `get_dashboard_stats()` no Supabase. Garanta que essa função existe no seu projeto Supabase para o painel carregar corretamente em produção.
 
 ---

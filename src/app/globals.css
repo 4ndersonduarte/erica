@@ -34,3 +34,22 @@
 a {
   @apply transition-colors duration-200;
 }
+
+/* Carrossel de vídeos: scrollbar visível no desktop */
+.video-carousel-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 transparent;
+}
+.video-carousel-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+.video-carousel-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.video-carousel-scroll::-webkit-scrollbar-thumb {
+  background-color: #94a3b8;
+  border-radius: 4px;
+}
+.video-carousel-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #64748b;
+}
