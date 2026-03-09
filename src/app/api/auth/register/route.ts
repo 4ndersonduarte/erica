@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     console.error('Register error:', error);
     const err = error as Error & { code?: string };
     const msg = err?.message ?? String(error);
-    if (msg.includes('Unique constraint') || msg.includes('unique') || msg?.code === 'P2002' || msg.includes('duplicate')) {
+    if (msg.includes('Unique constraint') || msg.includes('unique') || err?.code === 'P2002' || msg.includes('duplicate')) {
       return apiError('Este e-mail já está cadastrado', 400);
     }
     if (msg.includes('permission') || msg.includes('Policy') || msg.includes('row-level') || msg.includes('violates row-level security')) {
