@@ -1,45 +1,53 @@
-import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-dev-secret';
+import type { User } from '@supabase/supabase-js';
+import { createClient } from '@/lib/supabase/server';
 
 export type AuthRole = 'admin' | 'user';
 
-export interface JWTPayload {
+export interface AuthSession {
   sub: string;
   email: string;
-  role?: AuthRole;
-  iat?: number;
-  exp?: number;
+  role: AuthRole;
+  user: User;
 }
 
-export function signToken(payload: Omit<JWTPayload, 'iat' | 'exp'> & { role?: AuthRole }): string {
-  return jwt.sign(
-    payload,
-    JWT_SECRET,
-    { expiresIn: '7d' }
-  );
+function getAdminEmails() {
+  return (process.env.ADMIN_EMAILS || '')
+    .split(',')
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean);
 }
 
-export function verifyToken(token: string): JWTPayload | null {
-  try {
-    return jwt.verify(token, JWT_SECRET) as JWTPayload;
-  } catch {
-    return null;
-  }
+function getRole(user: User): AuthRole {
+  const metadataRole = user.app_metadata?.role;
+  const isMetadataAdmin =
+    metadataRole === 'admin' || user.app_metadata?.is_admin === true;
+  const isAllowlistedAdmin =
+    !!user.email && getAdminEmails().includes(user.email.toLowerCase());
+
+  return isMetadataAdmin || isAllowlistedAdmin ? 'admin' : 'user';
 }
 
-export async function getSession(): Promise<JWTPayload | null> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('admin_token')?.value;
-  if (!token) return null;
-  return verifyToken(token);
+export async function getSession(): Promise<AuthSession | null> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error || !user || !user.email) return null;
+
+  return {
+    sub: user.id,
+    email: user.email,
+    role: getRole(user),
+    user,
+  };
 }
 
-/** Exige login; se adminOnly, só administradores acessam (role === 'user' bloqueado). */
-export async function requireAuth(adminOnly = true): Promise<JWTPayload> {
+/** Exige login; se adminOnly, so administradores acessam. */
+export async function requireAuth(adminOnly = true): Promise<AuthSession> {
   const session = await getSession();
   if (!session) throw new Error('Unauthorized');
-  if (adminOnly && session.role === 'user') throw new Error('Unauthorized');
+  if (adminOnly && session.role !== 'admin') throw new Error('Unauthorized');
   return session;
 }

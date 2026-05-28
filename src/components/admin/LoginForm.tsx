@@ -4,6 +4,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
+const inputClass =
+  'mt-1.5 h-12 w-full rounded-lg border border-cream-border bg-white px-4 text-sm text-ink placeholder:text-ink-subtle outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/10';
+const labelClass = 'block text-sm font-medium text-ink-muted';
+
 export default function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState('');
@@ -26,7 +30,8 @@ export default function LoginForm() {
         return;
       }
       toast.success('Login realizado!');
-      router.push('/');
+      const next = new URLSearchParams(window.location.search).get('next');
+      router.push(next || '/admin/dashboard');
       router.refresh();
     } catch {
       toast.error('Erro de conexão');
@@ -36,31 +41,28 @@ export default function LoginForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="rounded-xl bg-white p-8 shadow-xl"
-    >
-      <label className="block text-sm font-medium text-dark-700">E-mail</label>
+    <form onSubmit={handleSubmit} className="rounded-lg border border-cream-border bg-white p-6 shadow-card sm:p-8">
+      <label className={labelClass}>E-mail</label>
       <input
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-        className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+        className={inputClass}
         placeholder="seu@email.com"
       />
-      <label className="mt-4 block text-sm font-medium text-dark-700">Senha</label>
+      <label className="mt-4 block text-sm font-medium text-ink-muted">Senha</label>
       <input
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
-        className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+        className={inputClass}
       />
       <button
         type="submit"
         disabled={loading}
-        className="mt-6 w-full rounded-lg bg-primary-800 text-white py-3 font-medium hover:bg-primary-900 transition disabled:opacity-50"
+        className="mt-6 flex h-12 w-full items-center justify-center rounded-lg bg-ink px-5 text-sm font-semibold text-white transition-colors hover:bg-ink-light disabled:opacity-50"
       >
         {loading ? 'Entrando...' : 'Entrar'}
       </button>

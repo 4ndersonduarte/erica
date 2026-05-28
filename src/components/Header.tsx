@@ -3,14 +3,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ChevronDown, Menu, X } from 'lucide-react';
 
 const navMain = [
   { href: '/', label: 'Início' },
   { href: '/imoveis', label: 'Imóveis' },
   { href: '/#porque-terra-boa', label: 'Por que Terra Boa' },
   { href: '/#sobre', label: 'Sobre' },
+  { href: '/anunciar-imovel', label: 'Anunciar' },
   { href: '/#contato', label: 'Contato' },
 ];
 
@@ -44,50 +45,55 @@ export default function Header() {
   const hasSession = session != null;
   const isAdmin = session?.role === 'admin';
 
-  const authLink = (
-    hasSession ? (
-      <>
-        {isAdmin && (
-          <Link
-            href="/admin/dashboard"
-            className="text-sm font-medium text-accent hover:text-accent-hover transition-colors"
-          >
-            Painel
-          </Link>
-        )}
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="text-sm font-medium text-ink-muted hover:text-accent transition-colors"
+  const authLink = hasSession ? (
+    <>
+      {isAdmin && (
+        <Link
+          href="/admin/dashboard"
+          className="text-sm font-medium text-accent transition-colors hover:text-accent-hover"
         >
-          Sair
-        </button>
-      </>
-    ) : (
-      <Link
-        href="/admin/login"
-        className="text-sm font-medium text-ink-muted hover:text-accent transition-colors"
+          Painel
+        </Link>
+      )}
+      <button
+        type="button"
+        onClick={handleLogout}
+        className="text-sm font-medium text-ink-muted transition-colors hover:text-accent"
       >
-        Entrar
-      </Link>
-    )
+        Sair
+      </button>
+    </>
+  ) : (
+    <Link
+      href="/admin/login"
+      className="text-sm font-medium text-ink-muted transition-colors hover:text-accent"
+    >
+      Entrar
+    </Link>
   );
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-cream-border">
-      <div className="container-custom flex min-h-[96px] items-center justify-between py-2">
+    <header className="sticky top-0 z-50 border-b border-cream-border/80 bg-white/90 backdrop-blur-xl">
+      <div className="container-custom flex min-h-[84px] items-center justify-between py-2 sm:min-h-[98px]">
         <Link
           href="/"
-          className="flex items-center gap-2 text-ink hover:opacity-90 transition-opacity"
+          className="flex items-center gap-2 text-ink transition-opacity hover:opacity-90"
         >
-          <Image src="/erica.png" alt="Erica Imóveis" width={315} height={99} className="h-[90px] w-auto object-contain" priority />
+          <Image
+            src="/erica.png"
+            alt="Erica Imóveis"
+            width={378}
+            height={119}
+            className="h-[70px] w-auto object-contain sm:h-[86px]"
+            priority
+          />
         </Link>
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden items-center gap-7 md:flex">
           {navMain.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm font-medium text-ink-muted hover:text-ink transition-colors relative after:absolute after:left-0 after:bottom-[-2px] after:h-px after:w-0 after:bg-accent after:transition-[width] hover:after:w-full"
+              className="relative text-sm font-medium text-ink-muted transition-colors hover:text-ink after:absolute after:bottom-[-6px] after:left-0 after:h-px after:w-0 after:bg-accent after:transition-[width] hover:after:w-full"
             >
               {item.label}
             </Link>
@@ -96,20 +102,27 @@ export default function Header() {
             <button
               type="button"
               onClick={() => setTopicosOpen(!topicosOpen)}
-              className="flex items-center gap-1 text-sm font-medium text-ink-muted hover:text-ink transition-colors"
+              className="flex items-center gap-1 text-sm font-medium text-ink-muted transition-colors hover:text-ink"
             >
               Tópicos
-              <ChevronDown size={16} className={topicosOpen ? 'rotate-180' : ''} />
+              <ChevronDown
+                size={16}
+                className={`transition-transform ${topicosOpen ? 'rotate-180' : ''}`}
+              />
             </button>
             {topicosOpen && (
               <>
-                <div className="fixed inset-0 z-10" aria-hidden onClick={() => setTopicosOpen(false)} />
-                <div className="absolute top-full left-0 mt-1 py-2 w-48 rounded-xl bg-white border border-cream-border shadow-elevated z-20">
+                <div
+                  className="fixed inset-0 z-10"
+                  aria-hidden
+                  onClick={() => setTopicosOpen(false)}
+                />
+                <div className="absolute left-0 top-full z-20 mt-4 w-48 rounded-lg border border-cream-border bg-white p-1.5 shadow-elevated">
                   {topicos.map((t) => (
                     <Link
                       key={t.href}
                       href={t.href}
-                      className="block px-4 py-2.5 text-sm text-ink hover:bg-accent-light hover:text-accent"
+                      className="block rounded-md px-3 py-2.5 text-sm text-ink transition-colors hover:bg-accent-light hover:text-accent"
                       onClick={() => setTopicosOpen(false)}
                     >
                       {t.label}
@@ -123,7 +136,7 @@ export default function Header() {
         </nav>
         <button
           type="button"
-          className="md:hidden p-2.5 -mr-2.5 text-ink-muted hover:text-ink"
+          className="-mr-2.5 rounded-lg p-2.5 text-ink-muted transition-colors hover:bg-cream-dark hover:text-ink md:hidden"
           onClick={() => setOpen(!open)}
           aria-label="Menu"
         >
@@ -131,24 +144,26 @@ export default function Header() {
         </button>
       </div>
       {open && (
-        <div className="md:hidden border-t border-cream-border bg-cream py-5 px-5">
-          <nav className="flex flex-col gap-1">
+        <div className="border-t border-cream-border bg-white px-4 py-3 shadow-elevated md:hidden">
+          <nav className="flex flex-col gap-1 rounded-lg bg-cream/70 p-2">
             {navMain.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="py-3 text-sm font-medium text-ink-muted hover:text-ink"
+                className="rounded-md px-3 py-3 text-sm font-medium text-ink-muted hover:bg-white hover:text-ink"
                 onClick={() => setOpen(false)}
               >
                 {item.label}
               </Link>
             ))}
-            <p className="pt-2 pb-1 text-xs font-semibold text-ink uppercase tracking-wide">Tópicos</p>
+            <p className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-ink">
+              Tópicos
+            </p>
             {topicos.map((t) => (
               <Link
                 key={t.href}
                 href={t.href}
-                className="py-2 pl-3 text-sm text-ink-muted hover:text-accent"
+                className="rounded-md px-3 py-2 text-sm text-ink-muted hover:bg-white hover:text-accent"
                 onClick={() => setOpen(false)}
               >
                 {t.label}
@@ -157,7 +172,7 @@ export default function Header() {
             {isAdmin && (
               <Link
                 href="/admin/dashboard"
-                className="pt-4 text-sm font-medium text-accent hover:text-accent-hover"
+                className="rounded-md px-3 pt-4 text-sm font-medium text-accent hover:text-accent-hover"
                 onClick={() => setOpen(false)}
               >
                 Painel
@@ -166,15 +181,18 @@ export default function Header() {
             {hasSession ? (
               <button
                 type="button"
-                onClick={() => { handleLogout(); setOpen(false); }}
-                className="pt-4 text-sm font-medium text-ink-muted hover:text-accent text-left"
+                onClick={() => {
+                  handleLogout();
+                  setOpen(false);
+                }}
+                className="rounded-md px-3 pt-4 text-left text-sm font-medium text-ink-muted hover:text-accent"
               >
                 Sair
               </button>
             ) : (
               <Link
                 href="/admin/login"
-                className="pt-4 text-sm font-medium text-ink-muted hover:text-accent"
+                className="rounded-md px-3 pt-4 text-sm font-medium text-ink-muted hover:text-accent"
                 onClick={() => setOpen(false)}
               >
                 Entrar

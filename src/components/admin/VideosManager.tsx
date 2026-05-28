@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { Upload, Trash2 } from 'lucide-react';
+import { Trash2, Upload } from 'lucide-react';
 
 type Video = { id: string; url: string; title: string | null; order: number };
 
@@ -63,23 +63,25 @@ export default function VideosManager({ initialVideos }: { initialVideos: Video[
   };
 
   return (
-    <div className="mt-8 space-y-8">
-      <div className="rounded-2xl bg-white border border-dark-200 p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-dark-900 mb-4">Adicionar vídeo</h2>
-        <p className="text-sm text-dark-600 mb-4">MP4 ou WebM, até 80MB. O vídeo aparecerá na home em &quot;Vídeos de apresentação&quot;.</p>
-        <div className="flex flex-wrap items-end gap-4">
-          <div className="min-w-[200px]">
-            <label className="block text-sm font-medium text-dark-700 mb-1">Título (opcional)</label>
+    <div className="mt-8 space-y-5">
+      <div className="rounded-lg border border-cream-border bg-white p-5 shadow-card sm:p-6">
+        <h2 className="text-lg font-semibold text-ink">Adicionar vídeo</h2>
+        <p className="mt-2 max-w-2xl text-sm text-ink-muted">
+          MP4 ou WebM, até 80MB. O vídeo aparecerá na home em &quot;Vídeos de apresentação&quot;.
+        </p>
+        <div className="mt-5 grid gap-3 sm:grid-cols-[minmax(220px,1fr)_auto] sm:items-end">
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-ink-muted">Título (opcional)</label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Ex: Tour pelo imóvel"
-              className="w-full rounded-xl border border-dark-200 px-4 py-2.5 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+              className="h-12 w-full rounded-lg border border-cream-border bg-white px-4 text-sm text-ink outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/10"
             />
           </div>
-          <label className="inline-flex items-center gap-2 rounded-xl bg-primary-500 text-white px-5 py-3 font-semibold hover:bg-primary-600 transition cursor-pointer disabled:opacity-50">
-            <Upload size={20} />
+          <label className="inline-flex h-12 cursor-pointer items-center justify-center gap-2 rounded-lg bg-ink px-5 text-sm font-semibold text-white transition-colors hover:bg-ink-light">
+            <Upload size={18} strokeWidth={1.8} />
             {uploading ? 'Enviando...' : 'Enviar vídeo'}
             <input
               type="file"
@@ -92,23 +94,23 @@ export default function VideosManager({ initialVideos }: { initialVideos: Video[
         </div>
       </div>
 
-      <div className="rounded-2xl bg-white border border-dark-200 p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-dark-900 mb-4">Vídeos na home</h2>
+      <div className="rounded-lg border border-cream-border bg-white p-5 shadow-card sm:p-6">
+        <h2 className="text-lg font-semibold text-ink">Vídeos na home</h2>
         {videos.length === 0 ? (
-          <p className="text-dark-500">Nenhum vídeo ainda. Adicione um acima.</p>
+          <p className="mt-4 text-ink-muted">Nenhum vídeo ainda. Adicione um acima.</p>
         ) : (
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <ul className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {videos.map((v) => (
-              <li key={v.id} className="rounded-xl border border-dark-200 overflow-hidden bg-dark-50">
+              <li key={v.id} className="overflow-hidden rounded-lg border border-cream-border bg-cream">
                 <div className="aspect-video bg-black">
-                  <video src={v.url} controls className="w-full h-full object-contain" preload="metadata" />
+                  <video src={v.url} controls className="h-full w-full object-contain" preload="metadata" />
                 </div>
-                <div className="p-3 flex items-center justify-between gap-2">
-                  <span className="text-sm font-medium text-dark-800 truncate">{v.title || 'Sem título'}</span>
+                <div className="flex items-center justify-between gap-2 p-3">
+                  <span className="truncate text-sm font-medium text-ink">{v.title || 'Sem título'}</span>
                   <button
                     type="button"
                     onClick={() => handleDelete(v.id)}
-                    className="p-2 rounded-lg text-red-600 hover:bg-red-50 transition"
+                    className="rounded-lg p-2 text-red-600 transition hover:bg-red-50"
                     title="Excluir"
                   >
                     <Trash2 size={18} />

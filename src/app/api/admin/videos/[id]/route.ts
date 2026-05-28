@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
-import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
+import { deleteHomeVideo } from '@/lib/supabase-data';
 import { apiSuccess, apiError, apiUnauthorized } from '@/lib/api-response';
 
 export const dynamic = 'force-dynamic';
@@ -12,7 +12,7 @@ export async function DELETE(
   try {
     await requireAuth();
     const { id } = await params;
-    await prisma.homeVideo.delete({ where: { id } });
+    await deleteHomeVideo(id);
     return apiSuccess({ deleted: true });
   } catch (e) {
     if ((e as Error).message === 'Unauthorized') return apiUnauthorized();

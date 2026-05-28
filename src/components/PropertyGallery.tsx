@@ -19,7 +19,7 @@ export default function PropertyGallery({
   const hasMultiple = list.length > 1;
 
   return (
-    <div className="relative rounded-2xl overflow-hidden border border-cream-border bg-cream-dark aspect-[4/3] property-gallery shadow-card">
+    <div className="property-gallery relative aspect-[4/3] overflow-hidden rounded-lg border border-cream-border bg-cream-dark shadow-card">
       {current?.url ? (
         <Image
           src={current.url}
@@ -39,7 +39,7 @@ export default function PropertyGallery({
           <button
             type="button"
             onClick={() => setIndex((i) => (i === 0 ? list.length - 1 : i - 1))}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-white/95 hover:bg-white shadow-card border border-cream-border transition-colors"
+            className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full border border-cream-border bg-white/95 p-2.5 shadow-card transition-colors hover:bg-white"
             aria-label="Foto anterior"
           >
             <ChevronLeft size={22} strokeWidth={1.5} />
@@ -47,7 +47,7 @@ export default function PropertyGallery({
           <button
             type="button"
             onClick={() => setIndex((i) => (i === list.length - 1 ? 0 : i + 1))}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-white/95 hover:bg-white shadow-card border border-cream-border transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-cream-border bg-white/95 p-2.5 shadow-card transition-colors hover:bg-white"
             aria-label="Próxima foto"
           >
             <ChevronRight size={22} strokeWidth={1.5} />

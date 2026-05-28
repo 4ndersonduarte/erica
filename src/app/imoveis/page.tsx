@@ -38,20 +38,20 @@ export default async function ImoveisPage({ searchParams }: Props) {
     <>
       <Header />
       <main className="min-h-screen bg-cream">
-        <div className="container-custom py-12 sm:py-16">
+        <div className="container-custom py-10 sm:py-16">
           <p className="text-sm font-semibold tracking-wide text-accent uppercase">Catálogo</p>
-          <h1 className="mt-2 text-3xl sm:text-4xl font-bold text-ink tracking-tight">
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
             Imóveis
           </h1>
           <p className="mt-2 text-ink-muted max-w-lg">
             Encontre o imóvel ideal com nossos filtros.
           </p>
 
-          <Suspense fallback={<div className="mt-8 h-20 bg-cream-dark rounded-2xl animate-pulse" />}>
+          <Suspense fallback={<div className="mt-8 h-20 animate-pulse rounded-lg bg-cream-dark" />}>
             <ListagemClient initialData={data} />
           </Suspense>
 
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             {data.items.map((p: Record<string, unknown>) => (
               <PropertyCard
                 key={String(p.id)}

@@ -1,6 +1,6 @@
-import { redirect, notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { getSession } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
+import { getPropertyById } from '@/lib/supabase-data';
 import PropertyForm from '@/components/admin/PropertyForm';
 
 export default async function EditarImovelPage({
@@ -13,10 +13,7 @@ export default async function EditarImovelPage({
   if (session.role === 'user') redirect('/');
 
   const { id } = await params;
-  const property = await prisma.property.findUnique({
-    where: { id },
-    include: { images: { orderBy: { order: 'asc' } } },
-  });
+  const property = await getPropertyById(id);
   if (!property) notFound();
 
   const initial = {
@@ -27,8 +24,11 @@ export default async function EditarImovelPage({
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-dark-900">Editar imóvel</h1>
-      <p className="mt-1 text-dark-600">{property.code}</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-accent sm:text-sm">
+        Edição
+      </p>
+      <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink">Editar imóvel</h1>
+      <p className="mt-2 text-ink-muted">{property.code}</p>
       <PropertyForm initial={initial} />
     </div>
   );

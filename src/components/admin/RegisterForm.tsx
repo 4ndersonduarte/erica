@@ -5,6 +5,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
+const inputClass =
+  'mt-1.5 h-12 w-full rounded-lg border border-cream-border bg-white px-4 text-sm text-ink placeholder:text-ink-subtle outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/10';
+const labelClass = 'block text-sm font-medium text-ink-muted';
+
 export default function RegisterForm() {
   const router = useRouter();
   const [name, setName] = useState('');
@@ -38,46 +42,43 @@ export default function RegisterForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="rounded-xl bg-white p-8 shadow-xl"
-    >
-      <label className="block text-sm font-medium text-dark-700">Nome (opcional)</label>
+    <form onSubmit={handleSubmit} className="rounded-lg border border-cream-border bg-white p-6 shadow-card sm:p-8">
+      <label className={labelClass}>Nome (opcional)</label>
       <input
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+        className={inputClass}
         placeholder="Seu nome"
       />
-      <label className="mt-4 block text-sm font-medium text-dark-700">E-mail</label>
+      <label className="mt-4 block text-sm font-medium text-ink-muted">E-mail</label>
       <input
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-        className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+        className={inputClass}
         placeholder="seu@email.com"
       />
-      <label className="mt-4 block text-sm font-medium text-dark-700">Senha (mín. 6 caracteres)</label>
+      <label className="mt-4 block text-sm font-medium text-ink-muted">Senha (mín. 6 caracteres)</label>
       <input
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
         minLength={6}
-        className="mt-1 w-full rounded-lg border border-dark-200 px-4 py-2.5 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+        className={inputClass}
       />
       <button
         type="submit"
         disabled={loading}
-        className="mt-6 w-full rounded-lg bg-primary-800 text-white py-3 font-medium hover:bg-primary-900 transition disabled:opacity-50"
+        className="mt-6 flex h-12 w-full items-center justify-center rounded-lg bg-ink px-5 text-sm font-semibold text-white transition-colors hover:bg-ink-light disabled:opacity-50"
       >
         {loading ? 'Cadastrando...' : 'Cadastrar'}
       </button>
-      <p className="mt-4 text-center text-dark-500 text-sm">
+      <p className="mt-4 text-center text-sm text-ink-muted">
         Já tem conta?{' '}
-        <Link href="/admin/login" className="text-accent font-medium hover:underline">
+        <Link href="/admin/login" className="font-medium text-accent hover:underline">
           Entrar
         </Link>
       </p>

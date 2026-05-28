@@ -1,27 +1,21 @@
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getSession } from '@/lib/auth';
-import { getSupabaseAdmin } from '@/lib/supabase-server';
-import { prisma } from '@/lib/prisma';
-import { Home, TrendingUp, Key, CheckCircle, Plus } from 'lucide-react';
+import { getDashboardStats } from '@/lib/supabase-data';
+import { CheckCircle, Home, Inbox, Key, Plus, TrendingUp, Video } from 'lucide-react';
 
-async function getStats(): Promise<{ total: number; forSale: number; forRent: number; sold: number; rented: number }> {
-  const supabase = getSupabaseAdmin();
-  if (supabase) {
-    const { data, error } = await supabase.rpc('get_dashboard_stats');
-    if (!error && data) return data as { total: number; forSale: number; forRent: number; sold: number; rented: number };
-  }
+async function getStats(): Promise<{
+  total: number;
+  forSale: number;
+  forRent: number;
+  sold: number;
+  rented: number;
+  pendingSubmissions?: number;
+}> {
   try {
-    const [total, forSale, forRent, sold, rented] = await Promise.all([
-      prisma.property.count(),
-      prisma.property.count({ where: { purpose: 'VENDA', status: 'AVAILABLE' } }),
-      prisma.property.count({ where: { purpose: 'ALUGUEL', status: 'AVAILABLE' } }),
-      prisma.property.count({ where: { status: 'SOLD' } }),
-      prisma.property.count({ where: { status: 'RENTED' } }),
-    ]);
-    return { total, forSale, forRent, sold, rented };
+    return await getDashboardStats();
   } catch {
-    return { total: 0, forSale: 0, forRent: 0, sold: 0, rented: 0 };
+    return { total: 0, forSale: 0, forRent: 0, sold: 0, rented: 0, pendingSubmissions: 0 };
   }
 }
 
@@ -33,54 +27,70 @@ export default async function DashboardPage() {
   const stats = await getStats();
 
   const cards = [
-    { label: 'Total de imóveis', value: stats.total, icon: Home, color: 'bg-primary-100 text-primary-800' },
+    { label: 'Total de imóveis', value: stats.total, icon: Home, color: 'bg-accent-light text-accent' },
     { label: 'Para venda', value: stats.forSale, icon: TrendingUp, color: 'bg-blue-100 text-blue-800' },
     { label: 'Para aluguel', value: stats.forRent, icon: Key, color: 'bg-amber-100 text-amber-800' },
+    { label: 'Aprovar anuncios', value: stats.pendingSubmissions || 0, icon: Inbox, color: 'bg-red-100 text-red-800' },
     { label: 'Vendidos', value: stats.sold, icon: CheckCircle, color: 'bg-green-100 text-green-800' },
     { label: 'Alugados', value: stats.rented, icon: CheckCircle, color: 'bg-emerald-100 text-emerald-800' },
   ];
 
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-dark-900">Dashboard</h1>
-          <p className="mt-1 text-dark-600">Visão geral dos imóveis</p>
-          <Link
-            href="/"
-            className="mt-2 inline-block text-sm font-medium text-primary-600 hover:text-primary-700 hover:underline"
-          >
-            ← Ir para a home do site
-          </Link>
+          <p className="text-xs font-semibold uppercase tracking-wide text-accent sm:text-sm">
+            Admin
+          </p>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink">Dashboard</h1>
+          <p className="mt-2 max-w-xl text-ink-muted">
+            Visão geral dos imóveis e atalhos rápidos.
+          </p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-center">
           <Link
             href="/admin/videos"
-            className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-dark-200 px-5 py-3.5 font-semibold text-dark-700 hover:bg-dark-50 transition min-h-[48px]"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-cream-border bg-white px-5 text-sm font-semibold text-ink transition-colors hover:bg-cream-dark"
           >
+            <Video size={18} strokeWidth={1.7} />
             Vídeos da home
           </Link>
           <Link
             href="/admin/imoveis/novo"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-500 text-white px-5 py-3.5 font-semibold hover:bg-primary-600 transition min-h-[48px] shadow-md"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-ink px-5 text-sm font-semibold text-white shadow-card transition-colors hover:bg-ink-light"
           >
-            <Plus size={22} />
-            Cadastrar novo imóvel
+            <Plus size={20} strokeWidth={1.8} />
+            Novo imóvel
           </Link>
         </div>
       </div>
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+
+      {!!stats.pendingSubmissions && (
+        <Link
+          href="/admin/anuncios"
+          className="mt-6 flex items-center justify-between gap-4 rounded-lg border border-red-200 bg-red-50 p-4 text-red-900 transition-colors hover:bg-red-100"
+        >
+          <span className="font-semibold">
+            {stats.pendingSubmissions} imovel{stats.pendingSubmissions !== 1 ? 's' : ''} aguardando aprovacao
+          </span>
+          <span className="text-sm font-semibold">Ver anuncios</span>
+        </Link>
+      )}
+
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         {cards.map(({ label, value, icon: Icon, color }) => (
           <div
             key={label}
-            className="rounded-xl bg-white border border-dark-200 p-6 flex items-start gap-4"
+            className="rounded-lg border border-cream-border bg-white p-5 shadow-card"
           >
-            <div className={`rounded-lg p-2 ${color}`}>
-              <Icon size={24} />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-dark-900">{value}</p>
-              <p className="text-sm text-dark-600">{label}</p>
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-3xl font-semibold tracking-tight text-ink">{value}</p>
+                <p className="mt-1 text-sm text-ink-muted">{label}</p>
+              </div>
+              <div className={`rounded-lg p-2.5 ${color}`}>
+                <Icon size={20} strokeWidth={1.7} />
+              </div>
             </div>
           </div>
         ))}

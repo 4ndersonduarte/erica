@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
-import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
+import { createHomeVideo, listHomeVideos } from '@/lib/supabase-data';
 import { apiSuccess, apiError, apiUnauthorized } from '@/lib/api-response';
 
 export const dynamic = 'force-dynamic';
@@ -8,10 +8,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   try {
     await requireAuth();
-    const videos = await prisma.homeVideo.findMany({
-      orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],
-    });
-    return apiSuccess(videos);
+    return apiSuccess(await listHomeVideos());
   } catch (e) {
     if ((e as Error).message === 'Unauthorized') return apiUnauthorized();
     return apiError('Erro ao listar vídeos', 500);
@@ -30,9 +27,7 @@ export async function POST(request: NextRequest) {
       return apiError('URL do vídeo é obrigatória', 400);
     }
 
-    const video = await prisma.homeVideo.create({
-      data: { url, title, order },
-    });
+    const video = await createHomeVideo({ url, title, order });
     return apiSuccess(video, 201);
   } catch (e) {
     if ((e as Error).message === 'Unauthorized') return apiUnauthorized();

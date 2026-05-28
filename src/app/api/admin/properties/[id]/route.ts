@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
-import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
+import { deleteProperty, getPropertyById, updateProperty } from '@/lib/supabase-data';
 import { propertySchema } from '@/lib/validations';
 import { generateSlug } from '@/lib/utils';
 import { apiSuccess, apiError, apiUnauthorized } from '@/lib/api-response';
@@ -14,10 +14,7 @@ export async function GET(
   try {
     await requireAuth();
     const { id } = await params;
-    const property = await prisma.property.findUnique({
-      where: { id },
-      include: { images: { orderBy: { order: 'asc' } } },
-    });
+    const property = await getPropertyById(id);
     if (!property) return apiError('Imóvel não encontrado', 404);
     return apiSuccess(property);
   } catch (e) {
@@ -33,11 +30,14 @@ export async function PUT(
   try {
     await requireAuth();
     const { id } = await params;
-    const existing = await prisma.property.findUnique({ where: { id } });
+    const existing = await getPropertyById(id);
     if (!existing) return apiError('Imóvel não encontrado', 404);
 
     const body = await request.json();
-    const slug = body.slug || generateSlug(body.title, existing.code);
+    const code = typeof body.code === 'string' && body.code.trim()
+      ? body.code.trim().toUpperCase()
+      : existing.code;
+    const slug = body.slug || generateSlug(body.title, code);
 
     const parsed = propertySchema.safeParse({
       ...body,
@@ -50,34 +50,27 @@ export async function PUT(
     }
 
     const data = parsed.data;
-    await prisma.propertyImage.deleteMany({ where: { propertyId: id } });
-    const property = await prisma.property.update({
-      where: { id },
-      data: {
-        slug,
-        title: data.title,
-        type: data.type,
-        topic: data.topic,
-        purpose: data.purpose,
-        value: data.value,
-        city: data.city,
-        neighborhood: data.neighborhood,
-        address: data.address,
-        rooms: data.rooms,
-        bathrooms: data.bathrooms,
-        parking: data.parking,
-        area: data.area,
-        description: data.description,
-        status: data.status,
-        featured: data.featured,
-        lat: data.lat ?? undefined,
-        lng: data.lng ?? undefined,
-        images: {
-          create: data.imageUrls.map((url, i) => ({ url, order: i })),
-        },
-      },
-      include: { images: { orderBy: { order: 'asc' } } },
-    });
+    const property = await updateProperty(id, {
+      code,
+      slug,
+      title: data.title,
+      type: data.type,
+      topic: data.topic,
+      purpose: data.purpose,
+      value: data.value,
+      city: data.city,
+      neighborhood: data.neighborhood,
+      address: data.address,
+      rooms: data.rooms,
+      bathrooms: data.bathrooms,
+      parking: data.parking,
+      area: data.area,
+      description: data.description,
+      status: data.status,
+      featured: data.featured,
+      lat: data.lat ?? null,
+      lng: data.lng ?? null,
+    }, data.imageUrls);
     return apiSuccess(property);
   } catch (e) {
     if ((e as Error).message === 'Unauthorized') return apiUnauthorized();
@@ -93,7 +86,7 @@ export async function DELETE(
   try {
     await requireAuth();
     const { id } = await params;
-    await prisma.property.delete({ where: { id } });
+    await deleteProperty(id);
     return apiSuccess({ deleted: true });
   } catch (e) {
     if ((e as Error).message === 'Unauthorized') return apiUnauthorized();

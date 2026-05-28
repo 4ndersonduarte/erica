@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Pencil, Trash2, ExternalLink } from 'lucide-react';
+import { ExternalLink, Pencil, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function AdminPropertyActions({
@@ -33,17 +33,34 @@ export default function AdminPropertyActions({
     }
   };
 
-  const btnClass = 'min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl text-dark-600 transition touch-manipulation';
+  const btnClass =
+    'flex h-10 w-10 items-center justify-center rounded-lg text-ink-muted transition-colors touch-manipulation';
+
   return (
     <div className="flex items-center gap-1">
-      <Link href={`/admin/imoveis/${id}/editar`} className={`${btnClass} hover:bg-primary-100 hover:text-primary-800`} title="Editar">
-        <Pencil size={20} />
+      <Link
+        href={`/admin/imoveis/${id}/editar`}
+        className={`${btnClass} hover:bg-accent-light hover:text-accent`}
+        title="Editar"
+      >
+        <Pencil size={18} />
       </Link>
-      <a href={`/imoveis/${slug}`} target="_blank" rel="noopener noreferrer" className={`${btnClass} hover:bg-dark-100`} title="Ver no site">
-        <ExternalLink size={20} />
+      <a
+        href={`/imoveis/${slug}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${btnClass} hover:bg-cream-dark hover:text-ink`}
+        title="Ver no site"
+      >
+        <ExternalLink size={18} />
       </a>
-      <button type="button" onClick={handleDelete} className={`${btnClass} hover:bg-red-100 hover:text-red-700`} title="Excluir">
-        <Trash2 size={20} />
+      <button
+        type="button"
+        onClick={handleDelete}
+        className={`${btnClass} hover:bg-red-100 hover:text-red-700`}
+        title="Excluir"
+      >
+        <Trash2 size={18} />
       </button>
     </div>
   );

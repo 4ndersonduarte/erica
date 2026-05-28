@@ -48,7 +48,7 @@ export default function HomeVideoCarousel({ videos }: { videos: Video[] }) {
         {videos.map((v) => (
           <div
             key={v.id}
-            className="relative flex-shrink-0 w-[280px] sm:w-[320px] rounded-2xl overflow-hidden border border-cream-border bg-black shadow-card snap-center"
+            className="relative w-[78vw] max-w-[300px] flex-shrink-0 snap-center overflow-hidden rounded-lg border border-cream-border bg-black shadow-card sm:w-[320px]"
           >
             <div className="aspect-[9/16] w-full bg-black">
               <video
@@ -75,7 +75,7 @@ export default function HomeVideoCarousel({ videos }: { videos: Video[] }) {
             type="button"
             onClick={() => scroll('left')}
             aria-label="Vídeos anteriores"
-            className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 sm:translate-x-0 z-10 w-12 h-12 rounded-full bg-white/95 shadow-lg border border-cream-border flex items-center justify-center transition opacity hover:bg-white ${canScrollLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+            className={`absolute left-0 top-1/2 z-10 flex h-11 w-11 -translate-x-1 -translate-y-1/2 items-center justify-center rounded-full border border-cream-border bg-white/95 shadow-lg transition hover:bg-white sm:translate-x-0 ${canScrollLeft ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
           >
             <ChevronLeft size={24} className="text-ink" />
           </button>
@@ -83,7 +83,7 @@ export default function HomeVideoCarousel({ videos }: { videos: Video[] }) {
             type="button"
             onClick={() => scroll('right')}
             aria-label="Próximos vídeos"
-            className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 sm:translate-x-0 z-10 w-12 h-12 rounded-full bg-white/95 shadow-lg border border-cream-border flex items-center justify-center transition opacity hover:bg-white ${canScrollRight ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+            className={`absolute right-0 top-1/2 z-10 flex h-11 w-11 translate-x-1 -translate-y-1/2 items-center justify-center rounded-full border border-cream-border bg-white/95 shadow-lg transition hover:bg-white sm:translate-x-0 ${canScrollRight ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
           >
             <ChevronRight size={24} className="text-ink" />
           </button>

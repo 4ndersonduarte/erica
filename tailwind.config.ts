@@ -10,21 +10,21 @@ const config: Config = {
     extend: {
       colors: {
         ink: {
-          DEFAULT: '#0a2653',
-          light: '#0d2f66',
-          muted: '#3d5a80',
-          subtle: '#5c7a9e',
+          DEFAULT: '#111827',
+          light: '#1f2937',
+          muted: '#4b5563',
+          subtle: '#6b7280',
         },
         cream: {
-          DEFAULT: '#fafaf9',
-          dark: '#f5f5f4',
-          border: '#e7e5e4',
+          DEFAULT: '#f8f7f4',
+          dark: '#efede8',
+          border: '#e4ded4',
         },
         accent: {
-          DEFAULT: '#fe6212',
-          hover: '#e5560f',
-          light: '#fff0e8',
-          muted: '#c94e0e',
+          DEFAULT: '#9a6a3a',
+          hover: '#7c532b',
+          light: '#f3ebe1',
+          muted: '#6f5131',
         },
         gold: {
           DEFAULT: '#fe6212',
@@ -59,9 +59,9 @@ const config: Config = {
         'hero': ['2.5rem', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
       },
       boxShadow: {
-        'card': '0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04)',
-        'card-hover': '0 10px 40px -15px rgb(0 0 0 / 0.12), 0 4px 12px -4px rgb(0 0 0 / 0.06)',
-        'elevated': '0 25px 50px -12px rgb(0 0 0 / 0.12)',
+        'card': '0 1px 2px 0 rgb(17 24 39 / 0.04), 0 12px 30px -24px rgb(17 24 39 / 0.18)',
+        'card-hover': '0 24px 50px -30px rgb(17 24 39 / 0.28), 0 10px 24px -18px rgb(17 24 39 / 0.18)',
+        'elevated': '0 28px 70px -36px rgb(17 24 39 / 0.36)',
         'inner-soft': 'inset 0 1px 2px 0 rgb(0 0 0 / 0.03)',
       },
       letterSpacing: {

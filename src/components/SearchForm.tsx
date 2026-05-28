@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Search } from 'lucide-react';
 
 const inputClass =
-  'w-full rounded-xl border border-cream-border bg-white px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none transition-shadow';
+  'h-12 w-full rounded-lg border border-cream-border bg-white/95 px-4 text-sm text-ink placeholder:text-ink-subtle outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/10';
 
 export default function SearchForm({ compact = false }: { compact?: boolean }) {
   const router = useRouter();
@@ -26,13 +26,13 @@ export default function SearchForm({ compact = false }: { compact?: boolean }) {
   if (compact) {
     return (
       <form onSubmit={handleSubmit} className="w-full">
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-[1.15fr_0.85fr_0.85fr_auto] sm:gap-3">
           <input
             type="text"
             placeholder="Bairro"
             value={neighborhood}
             onChange={(e) => setNeighborhood(e.target.value)}
-            className={`${inputClass} sm:w-36`}
+            className={inputClass}
           />
           <input
             type="number"
@@ -40,7 +40,7 @@ export default function SearchForm({ compact = false }: { compact?: boolean }) {
             value={minValue}
             onChange={(e) => setMinValue(e.target.value)}
             min={0}
-            className={`${inputClass} sm:w-28`}
+            className={inputClass}
           />
           <input
             type="number"
@@ -48,11 +48,11 @@ export default function SearchForm({ compact = false }: { compact?: boolean }) {
             value={maxValue}
             onChange={(e) => setMaxValue(e.target.value)}
             min={0}
-            className={`${inputClass} sm:w-28`}
+            className={inputClass}
           />
           <button
             type="submit"
-            className="flex items-center justify-center gap-2 rounded-xl bg-ink text-white px-6 py-3 text-sm font-semibold hover:bg-ink-light transition-colors"
+            className="flex h-12 items-center justify-center gap-2 rounded-lg bg-ink px-6 text-sm font-semibold text-white transition-colors hover:bg-ink-light"
           >
             <Search size={18} strokeWidth={2} />
             Buscar
@@ -64,7 +64,7 @@ export default function SearchForm({ compact = false }: { compact?: boolean }) {
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <input
           type="text"
           placeholder="Bairro"
@@ -90,7 +90,7 @@ export default function SearchForm({ compact = false }: { compact?: boolean }) {
         />
         <button
           type="submit"
-          className="flex items-center justify-center gap-2 rounded-xl bg-ink text-white px-6 py-3 text-sm font-semibold hover:bg-ink-light transition-colors sm:col-span-2"
+          className="flex h-12 items-center justify-center gap-2 rounded-lg bg-ink px-6 text-sm font-semibold text-white transition-colors hover:bg-ink-light sm:col-span-2"
         >
           <Search size={18} strokeWidth={2} />
           Buscar

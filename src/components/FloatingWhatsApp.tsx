@@ -16,14 +16,14 @@ const msgErica = encodeURIComponent('Olá! Vim pelo site da Erica Imóveis e gos
 export default function FloatingWhatsApp() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-2">
+    <div className="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-2 sm:bottom-6 sm:right-6">
       {open && (
-        <div className="flex flex-col gap-2 rounded-2xl bg-white border border-cream-border shadow-elevated p-2 min-w-[200px]">
+        <div className="flex min-w-[200px] flex-col gap-2 rounded-lg border border-cream-border bg-white p-2 shadow-elevated">
           <a
             href={`https://wa.me/${cleanNumber(whatsappErica)}?text=${msgErica}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-ink hover:bg-accent-light transition-colors"
+            className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-ink transition-colors hover:bg-accent-light"
           >
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-green-100 text-green-700">
               <MessageCircle size={18} />
@@ -34,7 +34,7 @@ export default function FloatingWhatsApp() {
             href={`https://wa.me/${cleanNumber(whatsappTerraBoa)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-ink hover:bg-accent-light transition-colors"
+            className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-ink transition-colors hover:bg-accent-light"
           >
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-green-100 text-green-700">
               <MessageCircle size={18} />

@@ -6,5 +6,5 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   const session = await getSession();
   if (!session) return apiUnauthorized();
-  return apiSuccess({ email: session.email, role: session.role });
+  return apiSuccess({ id: session.sub, email: session.email, role: session.role });
 }

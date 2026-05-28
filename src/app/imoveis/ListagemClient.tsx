@@ -34,10 +34,10 @@ export default function ListagemClient({ initialData }: Props) {
 
   return (
     <div className="mt-8 space-y-6">
-      <div className="rounded-2xl border border-cream-border bg-white p-5 shadow-card">
+      <div className="rounded-lg border border-cream-border bg-white p-4 shadow-card sm:p-5">
         <SearchForm />
       </div>
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <p className="text-sm font-medium text-ink-muted">
           {total} imóvel{total !== 1 ? 'eis' : ''} encontrado{total !== 1 ? 's' : ''}
         </p>
@@ -46,7 +46,7 @@ export default function ListagemClient({ initialData }: Props) {
           <select
             value={currentSort}
             onChange={(e) => setSort(e.target.value)}
-            className="rounded-xl border border-cream-border bg-white px-4 py-2.5 text-sm text-ink focus:border-accent focus:ring-2 focus:ring-accent/10 outline-none"
+            className="rounded-lg border border-cream-border bg-white px-4 py-2.5 text-sm text-ink outline-none focus:border-accent focus:ring-4 focus:ring-accent/10"
           >
             {sortOptions.map((o) => (
               <option key={o.value} value={o.value}>{o.label}</option>
@@ -60,7 +60,7 @@ export default function ListagemClient({ initialData }: Props) {
             type="button"
             onClick={() => setPage(page - 1)}
             disabled={page <= 1}
-            className="rounded-xl border border-cream-border bg-white px-5 py-2.5 text-sm font-medium text-ink disabled:opacity-40 hover:bg-cream-dark transition-colors"
+            className="rounded-lg border border-cream-border bg-white px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-cream-dark disabled:opacity-40"
           >
             Anterior
           </button>
@@ -71,7 +71,7 @@ export default function ListagemClient({ initialData }: Props) {
             type="button"
             onClick={() => setPage(page + 1)}
             disabled={page >= totalPages}
-            className="rounded-xl border border-cream-border bg-white px-5 py-2.5 text-sm font-medium text-ink disabled:opacity-40 hover:bg-cream-dark transition-colors"
+            className="rounded-lg border border-cream-border bg-white px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-cream-dark disabled:opacity-40"
           >
             Próxima
           </button>

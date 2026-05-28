@@ -8,8 +8,13 @@ export default async function NovoImovelPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-dark-900">Novo imóvel</h1>
-      <p className="mt-1 text-dark-600">Cadastre terrenos, casas, chácaras ou fazendas. Preencha os dados abaixo.</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-accent sm:text-sm">
+        Cadastro
+      </p>
+      <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink">Novo imóvel</h1>
+      <p className="mt-2 max-w-xl text-ink-muted">
+        Cadastre terrenos, casas, chácaras ou fazendas. Preencha os dados abaixo.
+      </p>
       <PropertyForm />
     </div>
   );

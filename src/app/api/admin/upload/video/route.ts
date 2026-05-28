@@ -1,21 +1,12 @@
 import { NextRequest } from 'next/server';
 import path from 'path';
-import { createClient } from '@supabase/supabase-js';
 import { requireAuth } from '@/lib/auth';
+import { createClient } from '@/lib/supabase/server';
 import { apiSuccess, apiError, apiUnauthorized } from '@/lib/api-response';
 
 export const dynamic = 'force-dynamic';
-const BUCKET = 'home-videos';
 
-// Crie o bucket "home-videos" no Supabase (Storage → New bucket, público) se ainda não existir.
-
-function getSupabaseStorage() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
-  if (!url || !key) return null;
-  return createClient(url, key);
-}
-
+const BUCKET = 'videos';
 const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/webm', 'video/quicktime'];
 
 export async function POST(request: NextRequest) {
@@ -28,16 +19,16 @@ export async function POST(request: NextRequest) {
     }
 
     if (!ALLOWED_VIDEO_TYPES.includes(file.type)) {
-      return apiError('Use vídeo MP4 ou WebM.', 400);
+      return apiError('Use video MP4, WebM ou MOV.', 400);
     }
-    const maxSize = 80 * 1024 * 1024; // 80MB
-    if (file.size > maxSize) {
-      return apiError('Vídeo muito grande. Máximo 80MB.', 400);
+    if (file.size > 80 * 1024 * 1024) {
+      return apiError('Video muito grande. Maximo 80MB.', 400);
+    }
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      return apiError('Storage nao configurado', 500);
     }
 
-    const supabase = getSupabaseStorage();
-    if (!supabase) return apiError('Storage não configurado', 500);
-
+    const supabase = await createClient();
     const ext = path.extname(file.name) || '.mp4';
     const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`;
     const bytes = await file.arrayBuffer();
@@ -48,9 +39,9 @@ export async function POST(request: NextRequest) {
     if (error) {
       console.error('Supabase video upload:', error);
       if (error.message?.includes('Bucket') || error.message?.includes('not found')) {
-        return apiError('Crie o bucket "home-videos" no Supabase (Storage → New bucket, público).', 500);
+        return apiError('Crie o bucket "videos" no Supabase Storage.', 500);
       }
-      return apiError(error.message || 'Erro no upload do vídeo', 500);
+      return apiError(error.message || 'Erro no upload do video', 500);
     }
 
     const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(data.path);

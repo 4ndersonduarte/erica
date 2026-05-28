@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
@@ -11,18 +10,6 @@ const exemplosImoveis = [
 ];
 
 async function main() {
-  const hashedPassword = await bcrypt.hash('admin123', 10);
-  await prisma.admin.upsert({
-    where: { email: 'admin@erica.com' },
-    update: {},
-    create: {
-      email: 'admin@erica.com',
-      password: hashedPassword,
-      name: 'Administrador',
-    },
-  });
-  console.log('Seed: admin criado (admin@erica.com / admin123)');
-
   const count = await prisma.property.count();
   if (count === 0) {
     for (const p of exemplosImoveis) {

@@ -1,8 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import { NextRequest } from 'next/server';
-import bcrypt from 'bcryptjs';
-import { prisma } from '@/lib/prisma';
+import { createClient } from '@/lib/supabase/server';
 import { registerSchema } from '@/lib/validations';
 import { apiSuccess, apiError } from '@/lib/api-response';
 
@@ -12,43 +11,36 @@ export async function POST(request: NextRequest) {
     const parsed = registerSchema.safeParse(body);
     if (!parsed.success) {
       return apiError(
-        parsed.error.errors[0]?.message ?? 'Dados inválidos',
+        parsed.error.errors[0]?.message ?? 'Dados invalidos',
         400
       );
     }
 
     const { name, email, password } = parsed.data;
-    const nameTrim = name?.trim() || null;
+    const supabase = await createClient();
+    const trimmedName = name?.trim();
 
-    const existing = await prisma.user.findUnique({ where: { email } });
-    if (existing) {
-      return apiError('Este e-mail já está cadastrado', 400);
-    }
-
-    const hashed = await bcrypt.hash(password, 10);
-    await prisma.user.create({
-      data: {
-        email,
-        password: hashed,
-        name: nameTrim,
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: trimmedName ? { name: trimmedName } : undefined,
       },
     });
 
-    return apiSuccess({ message: 'Conta criada. Faça login para continuar.' }, 201);
+    if (error?.message.toLowerCase().includes('already registered')) {
+      return apiError('Este e-mail ja esta cadastrado', 400);
+    }
+    if (error) return apiError(error.message, 400);
+
+    return apiSuccess({ message: 'Conta criada. Faca login para continuar.' }, 201);
   } catch (error: unknown) {
     console.error('Register error:', error);
-    const err = error as Error & { code?: string };
-    const msg = err?.message ?? String(error);
-    if (msg.includes('Unique constraint') || msg.includes('unique') || err?.code === 'P2002' || msg.includes('duplicate')) {
-      return apiError('Este e-mail já está cadastrado', 400);
-    }
-    if (msg.includes('permission') || msg.includes('Policy') || msg.includes('row-level') || msg.includes('violates row-level security')) {
-      return apiError('Sem permissão para criar conta. Tente novamente mais tarde.', 403);
-    }
-    // Em desenvolvimento, retorna a mensagem real para debug
-    const devMsg = process.env.NODE_ENV === 'development'
-      ? msg
-      : 'Erro ao cadastrar. Tente novamente.';
+    const msg = error instanceof Error ? error.message : String(error);
+    const devMsg =
+      process.env.NODE_ENV === 'development'
+        ? msg
+        : 'Erro ao cadastrar. Tente novamente.';
     return apiError(devMsg, 500);
   }
 }

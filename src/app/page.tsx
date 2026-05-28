@@ -3,38 +3,41 @@ import Image from 'next/image';
 import { Suspense } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import SearchForm from '@/components/SearchForm';
 import PropertyCard from '@/components/PropertyCard';
 import HomeVideoCarousel from '@/components/HomeVideoCarousel';
-import { MessageCircle, ArrowRight, User, Megaphone } from 'lucide-react';
-import { prisma } from '@/lib/prisma';
+import { ArrowRight, Megaphone, MessageCircle, User } from 'lucide-react';
+import { listHomeVideos, listProperties } from '@/lib/supabase-data';
 
 export const dynamic = 'force-dynamic';
 
-// Erica: (38) 98421-2207 → 5538984212207 (não usar NEXT_PUBLIC_WHATSAPP genérico para não cair em 11 99999...)
 const whatsappErica = process.env.NEXT_PUBLIC_WHATSAPP_ERICA ?? '5538984212207';
-const whatsappTerraBoa = process.env.NEXT_PUBLIC_WHATSAPP_TERRA_BOA || process.env.NEXT_PUBLIC_WHATSAPP || '5538984212207';
+const whatsappTerraBoa =
+  process.env.NEXT_PUBLIC_WHATSAPP_TERRA_BOA ||
+  process.env.NEXT_PUBLIC_WHATSAPP ||
+  '5538984212207';
 
 function cleanWa(n: string) {
   return n.replace(/\D/g, '');
 }
-const msgErica = encodeURIComponent('Olá! Vim pelo site da Erica Imóveis e gostaria de mais informações.');
 
-async function getFeaturedProperties() {
+const msgErica = encodeURIComponent(
+  'Ola! Vim pelo site da Erica Imoveis e gostaria de mais informacoes.'
+);
+
+async function getHomeProperties() {
   try {
     const items = await Promise.race([
-      prisma.property.findMany({
-        where: { featured: true, status: 'AVAILABLE' },
-        take: 6,
-        orderBy: { createdAt: 'desc' },
-        include: { images: { orderBy: { order: 'asc' }, take: 1 } },
+      listProperties({
+        status: 'AVAILABLE',
+        pageSize: 1000,
+        sort: 'recent',
       }),
       new Promise<never>((_, reject) =>
         setTimeout(() => reject(new Error('timeout')), 5000)
       ),
     ]);
-    return { items };
+    return { items: items.items };
   } catch {
     return { items: [] };
   }
@@ -42,17 +45,15 @@ async function getFeaturedProperties() {
 
 async function getHomeVideos() {
   try {
-    return await prisma.homeVideo.findMany({
-      orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],
-    });
+    return await listHomeVideos();
   } catch {
     return [];
   }
 }
 
 export default async function HomePage() {
-  const [{ items: featured }, videos] = await Promise.all([
-    getFeaturedProperties(),
+  const [{ items: properties }, videos] = await Promise.all([
+    getHomeProperties(),
     getHomeVideos(),
   ]);
 
@@ -60,8 +61,7 @@ export default async function HomePage() {
     <>
       <Header />
       <main>
-        {/* Hero */}
-        <section className="relative min-h-[85vh] flex flex-col justify-end pb-20 pt-24 sm:pt-32">
+        <section className="relative flex min-h-[78vh] flex-col justify-end overflow-hidden pb-8 pt-24 sm:min-h-[82vh] sm:pb-16 sm:pt-32">
           <div className="absolute inset-0">
             <Image
               src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920"
@@ -71,21 +71,22 @@ export default async function HomePage() {
               priority
               sizes="100vw"
             />
-            <div className="absolute inset-0 bg-ink/50" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/40 to-ink/20" />
           </div>
           <div className="container-custom relative z-10">
-            <p className="text-sm font-semibold tracking-wide text-white/80 uppercase mb-4">
-              Parceria Erica Imóveis e Terra Boa
+            <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-white/75 sm:text-sm">
+              Parceria Erica Imoveis e Terra Boa
             </p>
-            <h1 className="text-hero sm:text-display font-bold text-white tracking-tight max-w-3xl text-balance">
-              Encontre o imóvel ideal para você
+            <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-white text-balance sm:text-display">
+              Encontre o imovel ideal para voce
             </h1>
-            <p className="mt-6 text-lg text-white/90 max-w-xl leading-relaxed">
-              Terrenos, casas, fazendas e chácaras. Atendimento personalizado e transparência.
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">
+              Terrenos, casas, fazendas e chacaras. Atendimento personalizado e
+              transparencia em cada negociacao.
             </p>
-            <div className="mt-10 max-w-4xl">
-              <div className="rounded-2xl bg-white/95 backdrop-blur-sm p-4 sm:p-5 shadow-elevated border border-white/20">
-                <Suspense fallback={<div className="h-12 rounded-xl bg-white/50 animate-pulse" />}>
+            <div className="mt-8 max-w-4xl sm:mt-10">
+              <div className="rounded-lg border border-white/25 bg-white/95 p-3 shadow-elevated backdrop-blur-md sm:p-4">
+                <Suspense fallback={<div className="h-12 animate-pulse rounded-lg bg-white/50" />}>
                   <SearchForm compact />
                 </Suspense>
               </div>
@@ -93,104 +94,106 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Vídeos de apresentação (formato stories 9:16) */}
         {videos.length > 0 && (
-          <section className="py-16 sm:py-24 bg-white border-y border-cream-border">
+          <section className="border-y border-cream-border bg-white py-14 sm:py-20">
             <div className="container-custom">
-              <p className="text-sm font-semibold tracking-wide text-accent uppercase">Vídeos</p>
-              <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-ink tracking-tight">
-                Conheça nossos imóveis
+              <p className="text-xs font-semibold uppercase tracking-wide text-accent sm:text-sm">
+                Videos
+              </p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+                Conheca nossos imoveis
               </h2>
-              <p className="mt-2 text-ink-muted max-w-lg">
-                Vídeos de apresentação com detalhes dos imóveis e da região.
+              <p className="mt-2 max-w-lg text-ink-muted">
+                Videos de apresentacao com detalhes dos imoveis e da regiao.
               </p>
               <HomeVideoCarousel videos={videos} />
             </div>
           </section>
         )}
 
-        {/* Destaques / Exemplos */}
-        <section className="py-20 sm:py-28 bg-cream">
+        <section className="bg-cream py-16 sm:py-24">
           <div className="container-custom">
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
+            <div className="mb-10 flex flex-col gap-4 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-sm font-semibold tracking-wide text-accent uppercase">
-                  Destaques
+                <p className="text-xs font-semibold uppercase tracking-wide text-accent sm:text-sm">
+                  Imoveis
                 </p>
-                <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-ink tracking-tight">
-                  Imóveis em destaque
+                <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+                  Todos os imoveis disponiveis
                 </h2>
-                <p className="mt-2 text-ink-muted max-w-lg">
-                  Confira nossa seleção especial de imóveis.
+                <p className="mt-2 max-w-lg text-ink-muted">
+                  Confira as oportunidades cadastradas no site.
                 </p>
               </div>
               <Link
                 href="/imoveis"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent-hover transition-colors group"
+                className="group inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-accent-hover"
               >
-                Ver todos
-                <ArrowRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
+                Ver pagina de imoveis
+                <ArrowRight size={18} className="transition-transform group-hover:translate-x-0.5" />
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {featured.slice(0, 6).map((p: Record<string, unknown>) => (
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+              {properties.map((p: Record<string, unknown>) => (
                 <PropertyCard
                   key={String(p.id)}
                   property={p as Parameters<typeof PropertyCard>[0]['property']}
                 />
               ))}
             </div>
-            {featured.length === 0 && (
-              <p className="text-center text-ink-muted py-8">
-                Nenhum imóvel em destaque no momento. <Link href="/imoveis" className="text-accent font-medium hover:underline">Ver todos os imóveis</Link> ou cadastre no painel admin.
+            {properties.length === 0 && (
+              <p className="py-8 text-center text-ink-muted">
+                Nenhum imovel disponivel no momento.{' '}
+                <Link href="/imoveis" className="font-medium text-accent hover:underline">
+                  Ver pagina de imoveis
+                </Link>{' '}
+                ou cadastre no painel admin.
               </p>
             )}
           </div>
         </section>
 
-        {/* Por que escolher a Imobiliária Terra Boa? */}
-        <section id="porque-terra-boa" className="py-20 sm:py-28 bg-white border-y border-cream-border">
+        <section id="porque-terra-boa" className="border-y border-cream-border bg-white py-16 sm:py-24">
           <div className="container-custom">
-            <p className="text-sm font-semibold tracking-wide text-accent uppercase">Por que nos escolher</p>
-            <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-ink tracking-tight">
-              Por que escolher a Imobiliária Terra Boa?
+            <p className="text-xs font-semibold uppercase tracking-wide text-accent sm:text-sm">
+              Por que nos escolher
+            </p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+              Por que escolher a Imobiliaria Terra Boa?
             </h2>
-            <ul className="mt-8 grid sm:grid-cols-2 gap-4 max-w-2xl list-none">
-              <li className="flex items-start gap-3 text-ink-muted leading-relaxed">
-                <span className="text-accent font-bold">•</span>
-                Atendimento personalizado
-              </li>
-              <li className="flex items-start gap-3 text-ink-muted leading-relaxed">
-                <span className="text-accent font-bold">•</span>
-                Oportunidades selecionadas
-              </li>
-              <li className="flex items-start gap-3 text-ink-muted leading-relaxed">
-                <span className="text-accent font-bold">•</span>
-                Segurança na negociação
-              </li>
-              <li className="flex items-start gap-3 text-ink-muted leading-relaxed">
-                <span className="text-accent font-bold">•</span>
-                Conhecimento do mercado local
-              </li>
+            <ul className="mt-8 grid max-w-3xl list-none gap-3 sm:grid-cols-2">
+              {[
+                'Atendimento personalizado',
+                'Oportunidades selecionadas',
+                'Seguranca na negociacao',
+                'Conhecimento do mercado local',
+              ].map((item) => (
+                <li
+                  key={item}
+                  className="flex items-start gap-3 rounded-lg border border-cream-border bg-cream/40 p-4 leading-relaxed text-ink-muted"
+                >
+                  <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent" />
+                  {item}
+                </li>
+              ))}
             </ul>
           </div>
         </section>
 
-        {/* Não encontrou o imóvel + CTAs */}
-        <section className="py-20 sm:py-28 bg-cream">
+        <section className="bg-cream py-16 sm:py-24">
           <div className="container-custom text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold text-ink tracking-tight">
-              Não encontrou o imóvel que procura?
+            <h2 className="text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+              Nao encontrou o imovel que procura?
             </h2>
-            <p className="mt-4 text-ink-muted max-w-xl mx-auto">
+            <p className="mx-auto mt-4 max-w-xl text-ink-muted">
               Nossa equipe pode te ajudar a encontrar a melhor oportunidade.
             </p>
-            <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <div className="mt-8 grid gap-3 sm:mt-10 sm:flex sm:flex-wrap sm:justify-center">
               <a
                 href={`https://wa.me/${cleanWa(whatsappErica)}?text=${msgErica}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] text-white px-6 py-4 text-sm font-semibold hover:bg-[#20bd5a] transition-colors"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 py-4 text-sm font-semibold text-white transition-colors hover:bg-[#20bd5a]"
               >
                 <MessageCircle size={22} strokeWidth={1.5} />
                 WhatsApp
@@ -199,64 +202,68 @@ export default async function HomePage() {
                 href={`https://wa.me/${cleanWa(whatsappTerraBoa)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-ink text-white px-6 py-4 text-sm font-semibold hover:bg-ink-light transition-colors"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-ink px-6 py-4 text-sm font-semibold text-white transition-colors hover:bg-ink-light"
               >
                 <User size={22} strokeWidth={1.5} />
                 Falar com corretor
               </a>
               <Link
-                href="/admin/login"
-                className="inline-flex items-center gap-2 rounded-xl border-2 border-accent text-accent px-6 py-4 text-sm font-semibold hover:bg-accent-light transition-colors"
+                href="/anunciar-imovel"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-accent px-6 py-4 text-sm font-semibold text-accent transition-colors hover:bg-accent-light"
               >
                 <Megaphone size={22} strokeWidth={1.5} />
-                Anunciar meu imóvel
+                Anunciar meu imovel
               </Link>
             </div>
           </div>
         </section>
 
-        {/* Sobre Terra Boa */}
-        <section id="sobre" className="py-20 sm:py-28 bg-white border-y border-cream-border">
+        <section id="sobre" className="border-y border-cream-border bg-white py-16 sm:py-24">
           <div className="container-custom">
-            <p className="text-sm font-semibold tracking-wide text-accent uppercase">Sobre</p>
-            <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-ink tracking-tight">
-              Sobre a Imobiliária Terra Boa
+            <p className="text-xs font-semibold uppercase tracking-wide text-accent sm:text-sm">
+              Sobre
+            </p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+              Sobre a Imobiliaria Terra Boa
             </h2>
-            <div className="mt-6 max-w-2xl space-y-4 text-ink-muted leading-relaxed text-lg">
+            <div className="mt-6 max-w-2xl space-y-4 text-base leading-relaxed text-ink-muted sm:text-lg">
               <p>
-                A Imobiliária Terra Boa nasceu com o propósito de conectar pessoas às melhores oportunidades do mercado imobiliário.
+                A Imobiliaria Terra Boa nasceu com o proposito de conectar
+                pessoas as melhores oportunidades do mercado imobiliario.
               </p>
               <p>
-                Trabalhamos com dedicação para oferecer imóveis que atendam às necessidades de quem deseja comprar, vender, alugar ou investir com segurança e tranquilidade.
+                Trabalhamos com dedicacao para oferecer imoveis que atendam as
+                necessidades de quem deseja comprar, vender, alugar ou investir
+                com seguranca e tranquilidade.
               </p>
               <p>
-                Nosso compromisso é proporcionar um atendimento transparente, responsável e próximo, ajudando cada cliente a encontrar o imóvel ideal ou realizar um bom negócio.
+                Nosso compromisso e proporcionar um atendimento transparente,
+                responsavel e proximo, ajudando cada cliente a encontrar o
+                imovel ideal ou realizar um bom negocio.
               </p>
               <p>
-                Com conhecimento do mercado e atenção aos detalhes, buscamos sempre apresentar oportunidades reais e imóveis selecionados, garantindo mais confiança em cada negociação.
-              </p>
-              <p>
-                Seja para morar, investir ou vender seu imóvel, a Imobiliária Terra Boa está pronta para ajudar você a dar o próximo passo com segurança.
+                Com conhecimento do mercado e atencao aos detalhes, buscamos
+                sempre apresentar oportunidades reais e imoveis selecionados,
+                garantindo mais confianca em cada negociacao.
               </p>
             </div>
           </div>
         </section>
 
-        {/* Contato */}
-        <section id="contato" className="py-20 sm:py-28 bg-ink">
+        <section id="contato" className="bg-ink py-16 sm:py-24">
           <div className="container-custom text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+            <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
               Fale conosco
             </h2>
-            <p className="mt-4 text-stone-400 max-w-md mx-auto">
-              Tire dúvidas ou agende uma visita pelo WhatsApp.
+            <p className="mx-auto mt-4 max-w-md text-stone-400">
+              Tire duvidas ou agende uma visita pelo WhatsApp.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap sm:justify-center">
               <a
                 href={`https://wa.me/${cleanWa(whatsappErica)}?text=${msgErica}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-white text-ink px-6 py-4 text-sm font-semibold hover:bg-cream transition-colors"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-4 text-sm font-semibold text-ink transition-colors hover:bg-cream"
               >
                 <MessageCircle size={22} strokeWidth={1.5} />
                 WhatsApp (Erica)
@@ -265,7 +272,7 @@ export default async function HomePage() {
                 href={`https://wa.me/${cleanWa(whatsappTerraBoa)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-accent text-white px-6 py-4 text-sm font-semibold hover:bg-accent-hover transition-colors"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-4 text-sm font-semibold text-white transition-colors hover:bg-accent-hover"
               >
                 <MessageCircle size={22} strokeWidth={1.5} />
                 WhatsApp (Terra Boa)
