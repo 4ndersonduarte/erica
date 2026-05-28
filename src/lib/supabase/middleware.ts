@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import { getSupabaseConfig } from '@/lib/supabase/config';
 
 const PUBLIC_ADMIN_PATHS = ['/admin/login', '/admin/registro'];
 
@@ -23,11 +24,27 @@ function isAdminUser(user: { email?: string; app_metadata?: Record<string, unkno
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
+  const config = getSupabaseConfig();
+  const pathname = request.nextUrl.pathname;
+  const isAdminPath = pathname === '/admin' || pathname.startsWith('/admin/');
+  const isAdminApiPath = pathname.startsWith('/api/admin/');
+
+  if (!config) {
+    if (isAdminApiPath) {
+      return NextResponse.json({ error: 'Supabase nao configurado' }, { status: 503 });
+    }
+    if (isAdminPath && !isPublicAdminPath(pathname)) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/admin/login';
+      url.searchParams.set('next', pathname);
+      return NextResponse.redirect(url);
+    }
+    return response;
+  }
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    config.url,
+    config.key,
     {
       cookies: {
         getAll() {
@@ -47,10 +64,6 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const pathname = request.nextUrl.pathname;
-  const isAdminPath = pathname === '/admin' || pathname.startsWith('/admin/');
-  const isAdminApiPath = pathname.startsWith('/api/admin/');
 
   if (!user && (isAdminApiPath || (isAdminPath && !isPublicAdminPath(pathname)))) {
     if (isAdminApiPath) {

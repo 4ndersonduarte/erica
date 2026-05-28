@@ -4,7 +4,11 @@ import { apiSuccess, apiUnauthorized } from '@/lib/api-response';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const session = await getSession();
-  if (!session) return apiUnauthorized();
-  return apiSuccess({ id: session.sub, email: session.email, role: session.role });
+  try {
+    const session = await getSession();
+    if (!session) return apiSuccess(null);
+    return apiSuccess({ id: session.sub, email: session.email, role: session.role });
+  } catch {
+    return apiSuccess(null);
+  }
 }

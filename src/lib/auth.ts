@@ -28,11 +28,17 @@ function getRole(user: User): AuthRole {
 }
 
 export async function getSession(): Promise<AuthSession | null> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
+  let user: User | null = null;
+  let error: unknown = null;
+
+  try {
+    const supabase = await createClient();
+    const result = await supabase.auth.getUser();
+    user = result.data.user;
+    error = result.error;
+  } catch (err) {
+    error = err;
+  }
 
   if (error || !user || !user.email) return null;
 
