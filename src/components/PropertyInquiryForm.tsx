@@ -19,7 +19,7 @@ export default function PropertyInquiryForm({ propertyCode, propertyTitle, whats
   };
 
   const message = encodeURIComponent(
-    `Ola! Tenho interesse no imovel ${propertyCode} - ${propertyTitle}.\n\nNome: ${form.name}\nE-mail: ${form.email}\nTelefone: ${form.phone}\nDuvidas: ${form.questions || 'Nao informado'}`
+    `Olá! Tenho interesse no imóvel ${propertyCode} - ${propertyTitle}.\n\nNome: ${form.name}\nE-mail: ${form.email}\nTelefone: ${form.phone}\nDúvidas: ${form.questions || 'Não informado'}`
   );
 
   const href = `https://wa.me/${clean(whatsappNumber)}?text=${message}`;
@@ -48,7 +48,7 @@ export default function PropertyInquiryForm({ propertyCode, propertyTitle, whats
           </div>
         </div>
         <div>
-          <label className={labelClass}>Duvidas</label>
+          <label className={labelClass}>Dúvidas</label>
           <textarea
             className="mt-1.5 min-h-[110px] w-full rounded-lg border border-cream-border bg-white px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/10"
             value={form.questions}

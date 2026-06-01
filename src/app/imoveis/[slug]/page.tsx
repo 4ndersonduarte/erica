@@ -93,7 +93,7 @@ export default async function PropertyPage({ params }: Props) {
                 {property.title}
               </h1>
               <p className="mt-2 inline-flex rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-ink shadow-sm">
-                Codigo {property.code}
+                Código {property.code}
               </p>
               <p className="mt-6 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
                 {formatPrice(property.value)}

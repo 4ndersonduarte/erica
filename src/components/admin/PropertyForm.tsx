@@ -151,7 +151,7 @@ export default function PropertyForm({ initial }: Props) {
         <h2 className="text-lg font-semibold text-ink">Informações básicas</h2>
         {initial?.id && (
           <div>
-            <label className={labelClass}>Codigo do imovel *</label>
+            <label className={labelClass}>Código do imóvel *</label>
             <input
               type="text"
               value={form.code}
@@ -190,17 +190,17 @@ export default function PropertyForm({ initial }: Props) {
           <input type="number" step="0.01" min={0} value={form.value || ''} onChange={(e) => update('value', e.target.value)} required className={inputClass} inputMode="decimal" />
         </div>
         <div className="rounded-lg border border-accent/30 bg-accent-light/40 p-4">
-          <label className="block text-sm font-semibold text-ink">Endereco obrigatorio *</label>
+          <label className="block text-sm font-semibold text-ink">Endereço obrigatório *</label>
           <input
             type="text"
             value={form.address}
             onChange={(e) => update('address', e.target.value)}
             required
-            placeholder="Ex: Rua, avenida, numero, quadra ou lote"
+            placeholder="Ex: Rua, avenida, número, quadra ou lote"
             className={inputClass}
           />
           <p className="mt-2 text-xs leading-relaxed text-ink-muted">
-            Informe o endereco ou uma referencia clara do imovel.
+            Informe o endereço ou uma referência clara do imóvel.
           </p>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

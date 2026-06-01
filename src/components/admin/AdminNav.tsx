@@ -6,9 +6,9 @@ import { Building2, ExternalLink, Inbox, LayoutDashboard, LogOut, Video } from '
 
 const items = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/imoveis', label: 'Imoveis', icon: Building2 },
-  { href: '/admin/anuncios', label: 'Anuncios', icon: Inbox },
-  { href: '/admin/videos', label: 'Videos', icon: Video },
+  { href: '/admin/imoveis', label: 'Imóveis', icon: Building2 },
+  { href: '/admin/anuncios', label: 'Anúncios', icon: Inbox },
+  { href: '/admin/videos', label: 'Vídeos', icon: Video },
 ];
 
 export default function AdminNav() {
@@ -29,7 +29,7 @@ export default function AdminNav() {
             EI
           </span>
           <span className="min-w-0">
-            <span className="block text-sm font-semibold tracking-tight text-ink">Erica Imoveis</span>
+            <span className="block text-sm font-semibold tracking-tight text-ink">Erica Imóveis</span>
             <span className="block text-xs text-ink-subtle">Painel administrativo</span>
           </span>
         </Link>

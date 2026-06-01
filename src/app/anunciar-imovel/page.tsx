@@ -15,10 +15,10 @@ export default function AnunciarImovelPage() {
               Anuncie com a Erica
             </p>
             <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-              Envie seu imovel para avaliacao
+              Envie seu imóvel para avaliação
             </h1>
             <p className="mt-3 text-ink-muted">
-              Preencha os dados do imovel e seu contato. O anuncio entra como pendente e so aparece no site depois da aprovacao do admin.
+              Preencha os dados do imóvel e seu contato. O anúncio entra como pendente e só aparece no site depois da aprovação do admin.
             </p>
           </div>
           <ListingSubmissionForm />

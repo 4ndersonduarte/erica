@@ -19,14 +19,14 @@ export async function POST(request: NextRequest) {
 
     const allowed = ['image/jpeg', 'image/png', 'image/webp'];
     if (!allowed.includes(file.type)) {
-      return apiError('Tipo de arquivo nao permitido. Use JPEG, PNG ou WebP.', 400);
+      return apiError('Tipo de arquivo não permitido. Use JPEG, PNG ou WebP.', 400);
     }
     if (file.size > 5 * 1024 * 1024) {
-      return apiError('Arquivo muito grande. Maximo 5MB.', 400);
+      return apiError('Arquivo muito grande. Máximo de 5 MB.', 400);
     }
 
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-      return apiError('Storage nao configurado', 500);
+      return apiError('Storage não configurado', 500);
     }
 
     const supabase = await createClient();

@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     const parsed = loginSchema.safeParse(body);
     if (!parsed.success) {
       return apiError(
-        parsed.error.errors[0]?.message ?? 'Dados invalidos',
+        parsed.error.errors[0]?.message ?? 'Dados inválidos',
         400
       );
     }

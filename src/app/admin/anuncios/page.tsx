@@ -25,18 +25,18 @@ export default async function AdminAnunciosPage() {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-accent sm:text-sm">
-            Aprovacao
+            Aprovação
           </p>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink">Anuncios enviados</h1>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink">Anúncios enviados</h1>
           <p className="mt-2 text-ink-muted">
-            {pending.length} anuncio{pending.length !== 1 ? 's' : ''} aguardando aprovacao.
+            {pending.length} anúncio{pending.length !== 1 ? 's' : ''} aguardando aprovação.
           </p>
         </div>
       </div>
 
       {pending.length > 0 && (
         <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-4 text-amber-900">
-          Ha imoveis novos esperando revisao. Aprove para publicar no site ou recuse se precisar ajustar com o anunciante.
+          Há imóveis novos esperando revisão. Aprove para publicar no site ou recuse se precisar ajustar com o anunciante.
         </div>
       )}
 
@@ -72,20 +72,20 @@ export default async function AdminAnunciosPage() {
                 <p>{item.ownerEmail}</p>
               </div>
               <div>
-                <p className="font-semibold text-ink">Localizacao</p>
+                <p className="font-semibold text-ink">Localização</p>
                 <p>{item.address}</p>
                 <p>{item.neighborhood}, {item.city}</p>
               </div>
               <div>
-                <p className="font-semibold text-ink">Caracteristicas</p>
+                <p className="font-semibold text-ink">Características</p>
                 <p>{item.rooms} quartos · {item.bathrooms} banheiros · {item.parking} vagas</p>
-                <p>{item.area} m2</p>
+                <p>{item.area} m²</p>
               </div>
             </div>
             <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-ink-muted">{item.description}</p>
             {item.ownerNotes && (
               <p className="mt-3 rounded-lg bg-cream p-3 text-sm text-ink-muted">
-                Observacoes do anunciante: {item.ownerNotes}
+                Observações do anunciante: {item.ownerNotes}
               </p>
             )}
           </article>
@@ -94,7 +94,7 @@ export default async function AdminAnunciosPage() {
 
       {submissions.length === 0 && (
         <p className="py-12 text-center text-ink-muted">
-          Nenhum anuncio enviado ainda.
+          Nenhum anúncio enviado ainda.
         </p>
       )}
     </div>

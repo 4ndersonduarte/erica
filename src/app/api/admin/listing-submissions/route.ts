@@ -11,6 +11,6 @@ export async function GET() {
   } catch (e) {
     if ((e as Error).message === 'Unauthorized') return apiUnauthorized();
     console.error(e);
-    return apiError('Erro ao listar anuncios', 500);
+    return apiError('Erro ao listar anúncios', 500);
   }
 }

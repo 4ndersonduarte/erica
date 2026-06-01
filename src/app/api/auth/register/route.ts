@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     const parsed = registerSchema.safeParse(body);
     if (!parsed.success) {
       return apiError(
-        parsed.error.errors[0]?.message ?? 'Dados invalidos',
+        parsed.error.errors[0]?.message ?? 'Dados inválidos',
         400
       );
     }
@@ -29,11 +29,11 @@ export async function POST(request: NextRequest) {
     });
 
     if (error?.message.toLowerCase().includes('already registered')) {
-      return apiError('Este e-mail ja esta cadastrado', 400);
+      return apiError('Este e-mail já está cadastrado', 400);
     }
     if (error) return apiError(error.message, 400);
 
-    return apiSuccess({ message: 'Conta criada. Faca login para continuar.' }, 201);
+    return apiSuccess({ message: 'Conta criada. Faça login para continuar.' }, 201);
   } catch (error: unknown) {
     console.error('Register error:', error);
     const msg = error instanceof Error ? error.message : String(error);

@@ -57,14 +57,14 @@ export default function PropertyCard({ property, hrefOverride }: Props) {
     <article className="group overflow-hidden rounded-lg border border-cream-border bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-stone-300 hover:shadow-card-hover">
       <div className="flex items-center justify-between gap-2 border-b border-cream-border bg-white px-3 py-2">
         <span className="rounded-full bg-cream px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-ink">
-          Cod. {property.code}
+          Cód. {property.code}
         </span>
         <div className="flex items-center gap-1">
           <button
             type="button"
             onClick={shareProperty}
             className="rounded-full p-2 text-ink-muted transition-colors hover:bg-cream-dark hover:text-ink"
-            aria-label="Compartilhar imovel"
+            aria-label="Compartilhar imóvel"
             title="Compartilhar"
           >
             <Share2 size={17} strokeWidth={1.7} />
@@ -120,12 +120,12 @@ export default function PropertyCard({ property, hrefOverride }: Props) {
             <span className="flex items-center gap-1.5"><Bed size={15} strokeWidth={1.5} /> {property.rooms}</span>
             <span className="flex items-center gap-1.5"><Bath size={15} strokeWidth={1.5} /> {property.bathrooms}</span>
             <span className="flex items-center gap-1.5"><Car size={15} strokeWidth={1.5} /> {property.parking}</span>
-            <span className="flex items-center gap-1.5"><Square size={15} strokeWidth={1.5} /> {property.area} m2</span>
+            <span className="flex items-center gap-1.5"><Square size={15} strokeWidth={1.5} /> {property.area} m²</span>
           </div>
           <p className="mt-4 border-t border-cream-border pt-4 text-xl font-semibold tracking-tight text-ink">
             {formatPrice(property.value)}
             {property.purpose === 'ALUGUEL' && (
-              <span className="text-sm font-normal text-ink-muted">/mes</span>
+              <span className="text-sm font-normal text-ink-muted">/mês</span>
             )}
           </p>
         </div>

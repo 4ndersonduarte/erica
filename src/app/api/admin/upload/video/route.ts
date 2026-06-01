@@ -19,13 +19,13 @@ export async function POST(request: NextRequest) {
     }
 
     if (!ALLOWED_VIDEO_TYPES.includes(file.type)) {
-      return apiError('Use video MP4, WebM ou MOV.', 400);
+      return apiError('Use vídeo MP4, WebM ou MOV.', 400);
     }
     if (file.size > 80 * 1024 * 1024) {
-      return apiError('Video muito grande. Maximo 80MB.', 400);
+      return apiError('Vídeo muito grande. Máximo de 80 MB.', 400);
     }
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-      return apiError('Storage nao configurado', 500);
+      return apiError('Storage não configurado', 500);
     }
 
     const supabase = await createClient();
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
       if (error.message?.includes('Bucket') || error.message?.includes('not found')) {
         return apiError('Crie o bucket "videos" no Supabase Storage.', 500);
       }
-      return apiError(error.message || 'Erro no upload do video', 500);
+      return apiError(error.message || 'Erro no upload do vídeo', 500);
     }
 
     const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(data.path);

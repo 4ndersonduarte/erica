@@ -67,7 +67,7 @@ export default function VideosManager({ initialVideos }: { initialVideos: Video[
       <div className="rounded-lg border border-cream-border bg-white p-5 shadow-card sm:p-6">
         <h2 className="text-lg font-semibold text-ink">Adicionar vídeo</h2>
         <p className="mt-2 max-w-2xl text-sm text-ink-muted">
-          MP4 ou WebM, até 80MB. O vídeo aparecerá na home em &quot;Vídeos de apresentação&quot;.
+          MP4 ou WebM, até 80 MB. O vídeo aparecerá na home em &quot;Vídeos de apresentação&quot;.
         </p>
         <div className="mt-5 grid gap-3 sm:grid-cols-[minmax(220px,1fr)_auto] sm:items-end">
           <div>

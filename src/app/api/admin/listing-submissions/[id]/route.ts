@@ -22,9 +22,9 @@ export async function PATCH(
     const adminNotes = typeof body?.adminNotes === 'string' ? body.adminNotes : null;
     const submission = await getListingSubmissionById(id);
 
-    if (!submission) return apiError('Anuncio nao encontrado', 404);
+    if (!submission) return apiError('Anúncio não encontrado', 404);
     if (submission.status !== 'PENDING') {
-      return apiError('Este anuncio ja foi analisado', 400);
+      return apiError('Este anúncio já foi analisado', 400);
     }
 
     if (action === 'reject') {
@@ -32,7 +32,7 @@ export async function PATCH(
       return apiSuccess(updated);
     }
 
-    if (action !== 'approve') return apiError('Acao invalida', 400);
+    if (action !== 'approve') return apiError('Ação inválida', 400);
 
     const code = generatePropertyCode();
     const property = await createProperty(
@@ -52,7 +52,7 @@ export async function PATCH(
         parking: submission.parking,
         area: submission.area,
         description: `${submission.description}\n\nContato do anunciante: ${submission.ownerName} - ${submission.ownerPhone} - ${submission.ownerEmail}${
-          submission.ownerNotes ? `\nObservacoes do anunciante: ${submission.ownerNotes}` : ''
+          submission.ownerNotes ? `\nObservações do anunciante: ${submission.ownerNotes}` : ''
         }`,
         status: 'AVAILABLE',
         featured: false,
@@ -70,6 +70,6 @@ export async function PATCH(
   } catch (e) {
     if ((e as Error).message === 'Unauthorized') return apiUnauthorized();
     console.error(e);
-    return apiError('Erro ao analisar anuncio', 500);
+    return apiError('Erro ao analisar anúncio', 500);
   }
 }

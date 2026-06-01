@@ -19,11 +19,11 @@ export default function ListingSubmissionActions({ id }: { id: string }) {
         body: JSON.stringify({ action }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Erro ao analisar anuncio');
-      toast.success(action === 'approve' ? 'Anuncio aprovado' : 'Anuncio recusado');
+      if (!res.ok) throw new Error(data.error || 'Erro ao analisar anúncio');
+      toast.success(action === 'approve' ? 'Anúncio aprovado' : 'Anúncio recusado');
       router.refresh();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Erro ao analisar anuncio');
+      toast.error(err instanceof Error ? err.message : 'Erro ao analisar anúncio');
     } finally {
       setLoading(null);
     }

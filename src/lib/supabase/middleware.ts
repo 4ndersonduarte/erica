@@ -31,7 +31,7 @@ export async function updateSession(request: NextRequest) {
 
   if (!config) {
     if (isAdminApiPath) {
-      return NextResponse.json({ error: 'Supabase nao configurado' }, { status: 503 });
+      return NextResponse.json({ error: 'Supabase não configurado' }, { status: 503 });
     }
     if (isAdminPath && !isPublicAdminPath(pathname)) {
       const url = request.nextUrl.clone();
@@ -67,7 +67,7 @@ export async function updateSession(request: NextRequest) {
 
   if (!user && (isAdminApiPath || (isAdminPath && !isPublicAdminPath(pathname)))) {
     if (isAdminApiPath) {
-      return NextResponse.json({ error: 'Nao autorizado' }, { status: 401 });
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
     }
 
     const url = request.nextUrl.clone();
@@ -78,7 +78,7 @@ export async function updateSession(request: NextRequest) {
 
   if (user && (isAdminApiPath || (isAdminPath && !isPublicAdminPath(pathname))) && !isAdminUser(user)) {
     if (isAdminApiPath) {
-      return NextResponse.json({ error: 'Nao autorizado' }, { status: 401 });
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
     }
 
     const url = request.nextUrl.clone();

@@ -30,10 +30,10 @@ export default function Footer() {
         </div>
         <div className="mt-8 flex flex-wrap gap-4 text-sm text-stone-400">
           <Link href="/anunciar-imovel" className="transition-colors hover:text-white">
-            Anunciar imovel
+            Anunciar imóvel
           </Link>
           <Link href="/politica-de-privacidade" className="transition-colors hover:text-white">
-            Politica de privacidade
+            Política de privacidade
           </Link>
         </div>
         <div className="mt-12 pt-8 border-t border-stone-800 text-center text-stone-500 text-sm">

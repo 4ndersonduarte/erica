@@ -19,7 +19,7 @@ export default async function sitemap() {
       priority: 0.8,
     }));
   } catch {
-    // Supabase pode estar indisponivel no build.
+    // Supabase pode estar indisponível no build.
   }
 
   const staticPages = [

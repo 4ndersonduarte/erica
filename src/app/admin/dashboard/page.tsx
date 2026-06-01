@@ -30,7 +30,7 @@ export default async function DashboardPage() {
     { label: 'Total de imóveis', value: stats.total, icon: Home, color: 'bg-accent-light text-accent' },
     { label: 'Para venda', value: stats.forSale, icon: TrendingUp, color: 'bg-blue-100 text-blue-800' },
     { label: 'Para aluguel', value: stats.forRent, icon: Key, color: 'bg-amber-100 text-amber-800' },
-    { label: 'Aprovar anuncios', value: stats.pendingSubmissions || 0, icon: Inbox, color: 'bg-red-100 text-red-800' },
+    { label: 'Aprovar anúncios', value: stats.pendingSubmissions || 0, icon: Inbox, color: 'bg-red-100 text-red-800' },
     { label: 'Vendidos', value: stats.sold, icon: CheckCircle, color: 'bg-green-100 text-green-800' },
     { label: 'Alugados', value: stats.rented, icon: CheckCircle, color: 'bg-emerald-100 text-emerald-800' },
   ];
@@ -71,9 +71,9 @@ export default async function DashboardPage() {
           className="mt-6 flex items-center justify-between gap-4 rounded-lg border border-red-200 bg-red-50 p-4 text-red-900 transition-colors hover:bg-red-100"
         >
           <span className="font-semibold">
-            {stats.pendingSubmissions} imovel{stats.pendingSubmissions !== 1 ? 's' : ''} aguardando aprovacao
+            {stats.pendingSubmissions} imóvel{stats.pendingSubmissions !== 1 ? 'eis' : ''} aguardando aprovação
           </span>
-          <span className="text-sm font-semibold">Ver anuncios</span>
+          <span className="text-sm font-semibold">Ver anúncios</span>
         </Link>
       )}
 

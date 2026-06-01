@@ -22,7 +22,7 @@ function cleanWa(n: string) {
 }
 
 const msgErica = encodeURIComponent(
-  'Ola! Vim pelo site da Erica Imoveis e gostaria de mais informacoes.'
+  'Olá! Vim pelo site da Erica Imóveis e gostaria de mais informações.'
 );
 
 async function getHomeProperties() {
@@ -75,14 +75,14 @@ export default async function HomePage() {
           </div>
           <div className="container-custom relative z-10">
             <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-white/75 sm:text-sm">
-              Parceria Erica Imoveis e Terra Boa
+              Parceria Erica Imóveis e Terra Boa
             </p>
             <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-white text-balance sm:text-display">
-              Encontre o imovel ideal para voce
+              Encontre o imóvel ideal para você
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">
-              Terrenos, casas, fazendas e chacaras. Atendimento personalizado e
-              transparencia em cada negociacao.
+              Terrenos, casas, fazendas e chácaras. Atendimento personalizado e
+              transparência em cada negociação.
             </p>
             <div className="mt-8 max-w-4xl sm:mt-10">
               <div className="rounded-lg border border-white/25 bg-white/95 p-3 shadow-elevated backdrop-blur-md sm:p-4">
@@ -98,13 +98,13 @@ export default async function HomePage() {
           <section className="border-y border-cream-border bg-white py-14 sm:py-20">
             <div className="container-custom">
               <p className="text-xs font-semibold uppercase tracking-wide text-accent sm:text-sm">
-                Videos
+                Vídeos
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-                Conheca nossos imoveis
+                Conheça nossos imóveis
               </h2>
               <p className="mt-2 max-w-lg text-ink-muted">
-                Videos de apresentacao com detalhes dos imoveis e da regiao.
+                Vídeos de apresentação com detalhes dos imóveis e da região.
               </p>
               <HomeVideoCarousel videos={videos} />
             </div>
@@ -116,10 +116,10 @@ export default async function HomePage() {
             <div className="mb-10 flex flex-col gap-4 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-accent sm:text-sm">
-                  Imoveis
+                  Imóveis
                 </p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-                  Todos os imoveis disponiveis
+                  Todos os imóveis disponíveis
                 </h2>
                 <p className="mt-2 max-w-lg text-ink-muted">
                   Confira as oportunidades cadastradas no site.
@@ -129,7 +129,7 @@ export default async function HomePage() {
                 href="/imoveis"
                 className="group inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-accent-hover"
               >
-                Ver pagina de imoveis
+                Ver página de imóveis
                 <ArrowRight size={18} className="transition-transform group-hover:translate-x-0.5" />
               </Link>
             </div>
@@ -143,9 +143,9 @@ export default async function HomePage() {
             </div>
             {properties.length === 0 && (
               <p className="py-8 text-center text-ink-muted">
-                Nenhum imovel disponivel no momento.{' '}
+                Nenhum imóvel disponível no momento.{' '}
                 <Link href="/imoveis" className="font-medium text-accent hover:underline">
-                  Ver pagina de imoveis
+                  Ver página de imóveis
                 </Link>{' '}
                 ou cadastre no painel admin.
               </p>
@@ -159,13 +159,13 @@ export default async function HomePage() {
               Por que nos escolher
             </p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-              Por que escolher a Imobiliaria Terra Boa?
+              Por que escolher a Imobiliária Terra Boa?
             </h2>
             <ul className="mt-8 grid max-w-3xl list-none gap-3 sm:grid-cols-2">
               {[
                 'Atendimento personalizado',
                 'Oportunidades selecionadas',
-                'Seguranca na negociacao',
+                'Segurança na negociação',
                 'Conhecimento do mercado local',
               ].map((item) => (
                 <li
@@ -183,7 +183,7 @@ export default async function HomePage() {
         <section className="bg-cream py-16 sm:py-24">
           <div className="container-custom text-center">
             <h2 className="text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-              Nao encontrou o imovel que procura?
+              Não encontrou o imóvel que procura?
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-ink-muted">
               Nossa equipe pode te ajudar a encontrar a melhor oportunidade.
@@ -212,7 +212,7 @@ export default async function HomePage() {
                 className="inline-flex items-center justify-center gap-2 rounded-lg border border-accent px-6 py-4 text-sm font-semibold text-accent transition-colors hover:bg-accent-light"
               >
                 <Megaphone size={22} strokeWidth={1.5} />
-                Anunciar meu imovel
+                Anunciar meu imóvel
               </Link>
             </div>
           </div>
@@ -224,27 +224,27 @@ export default async function HomePage() {
               Sobre
             </p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-              Sobre a Imobiliaria Terra Boa
+              Sobre a Imobiliária Terra Boa
             </h2>
             <div className="mt-6 max-w-2xl space-y-4 text-base leading-relaxed text-ink-muted sm:text-lg">
               <p>
-                A Imobiliaria Terra Boa nasceu com o proposito de conectar
-                pessoas as melhores oportunidades do mercado imobiliario.
+                A Imobiliária Terra Boa nasceu com o propósito de conectar
+                pessoas às melhores oportunidades do mercado imobiliário.
               </p>
               <p>
-                Trabalhamos com dedicacao para oferecer imoveis que atendam as
+                Trabalhamos com dedicação para oferecer imóveis que atendam às
                 necessidades de quem deseja comprar, vender, alugar ou investir
-                com seguranca e tranquilidade.
+                com segurança e tranquilidade.
               </p>
               <p>
-                Nosso compromisso e proporcionar um atendimento transparente,
-                responsavel e proximo, ajudando cada cliente a encontrar o
-                imovel ideal ou realizar um bom negocio.
+                Nosso compromisso é proporcionar um atendimento transparente,
+                responsável e próximo, ajudando cada cliente a encontrar o
+                imóvel ideal ou realizar um bom negócio.
               </p>
               <p>
-                Com conhecimento do mercado e atencao aos detalhes, buscamos
-                sempre apresentar oportunidades reais e imoveis selecionados,
-                garantindo mais confianca em cada negociacao.
+                Com conhecimento do mercado e atenção aos detalhes, buscamos
+                sempre apresentar oportunidades reais e imóveis selecionados,
+                garantindo mais confiança em cada negociação.
               </p>
             </div>
           </div>
@@ -256,7 +256,7 @@ export default async function HomePage() {
               Fale conosco
             </h2>
             <p className="mx-auto mt-4 max-w-md text-stone-400">
-              Tire duvidas ou agende uma visita pelo WhatsApp.
+              Tire dúvidas ou agende uma visita pelo WhatsApp.
             </p>
             <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap sm:justify-center">
               <a

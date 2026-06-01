@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
 
     if (!parsed.success) {
       const first = parsed.error.errors[0];
-      return apiError(first?.message ?? 'Dados invalidos', 400);
+      return apiError(first?.message ?? 'Dados inválidos', 400);
     }
 
     const submission = await createListingSubmission({
@@ -31,8 +31,8 @@ export async function POST(request: NextRequest) {
   } catch (e) {
     console.error(e);
     const message = (e as Error).message?.includes('ListingSubmission')
-      ? 'Ainda falta criar a tabela de anuncios no Supabase.'
-      : 'Erro ao enviar anuncio';
+      ? 'Ainda falta criar a tabela de anúncios no Supabase.'
+      : 'Erro ao enviar anúncio';
     return apiError(message, 500);
   }
 }
