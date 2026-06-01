@@ -25,68 +25,58 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Políticas de acesso para o bucket de imagens dos imóveis
 -- Permitir leitura pública
+DROP POLICY IF EXISTS "Public images are viewable by everyone" ON storage.objects;
 CREATE POLICY "Public images are viewable by everyone"
 ON storage.objects FOR SELECT
 USING ( bucket_id = 'property-images' );
 
 -- Permitir upload para usuários autenticados
+DROP POLICY IF EXISTS "Authenticated users can upload images" ON storage.objects;
 CREATE POLICY "Authenticated users can upload images"
 ON storage.objects FOR INSERT
-WITH CHECK (
-  bucket_id = 'property-images' AND 
-  auth.role() = 'authenticated'
-);
+TO authenticated
+WITH CHECK ( bucket_id = 'property-images' );
 
 -- Permitir atualização para usuários autenticados
+DROP POLICY IF EXISTS "Authenticated users can update images" ON storage.objects;
 CREATE POLICY "Authenticated users can update images"
 ON storage.objects FOR UPDATE
-USING (
-  bucket_id = 'property-images' AND 
-  auth.role() = 'authenticated'
-)
-WITH CHECK (
-  bucket_id = 'property-images' AND 
-  auth.role() = 'authenticated'
-);
+TO authenticated
+USING ( bucket_id = 'property-images' )
+WITH CHECK ( bucket_id = 'property-images' );
 
 -- Permitir deleção para usuários autenticados
+DROP POLICY IF EXISTS "Authenticated users can delete images" ON storage.objects;
 CREATE POLICY "Authenticated users can delete images"
 ON storage.objects FOR DELETE
-USING (
-  bucket_id = 'property-images' AND 
-  auth.role() = 'authenticated'
-);
+TO authenticated
+USING ( bucket_id = 'property-images' );
 
 -- Políticas de acesso para o bucket de uploads gerais
 -- Permitir leitura pública
+DROP POLICY IF EXISTS "Public uploads are viewable by everyone" ON storage.objects;
 CREATE POLICY "Public uploads are viewable by everyone"
 ON storage.objects FOR SELECT
 USING ( bucket_id = 'uploads' );
 
 -- Permitir upload para usuários autenticados
+DROP POLICY IF EXISTS "Authenticated users can upload files" ON storage.objects;
 CREATE POLICY "Authenticated users can upload files"
 ON storage.objects FOR INSERT
-WITH CHECK (
-  bucket_id = 'uploads' AND 
-  auth.role() = 'authenticated'
-);
+TO authenticated
+WITH CHECK ( bucket_id = 'uploads' );
 
 -- Permitir atualização para usuários autenticados
+DROP POLICY IF EXISTS "Authenticated users can update files" ON storage.objects;
 CREATE POLICY "Authenticated users can update files"
 ON storage.objects FOR UPDATE
-USING (
-  bucket_id = 'uploads' AND 
-  auth.role() = 'authenticated'
-)
-WITH CHECK (
-  bucket_id = 'uploads' AND 
-  auth.role() = 'authenticated'
-);
+TO authenticated
+USING ( bucket_id = 'uploads' )
+WITH CHECK ( bucket_id = 'uploads' );
 
 -- Permitir deleção para usuários autenticados
+DROP POLICY IF EXISTS "Authenticated users can delete files" ON storage.objects;
 CREATE POLICY "Authenticated users can delete files"
 ON storage.objects FOR DELETE
-USING (
-  bucket_id = 'uploads' AND 
-  auth.role() = 'authenticated'
-);
+TO authenticated
+USING ( bucket_id = 'uploads' );

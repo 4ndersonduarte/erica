@@ -1,5 +1,4 @@
 import { NextRequest } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 import { requireAuth } from '@/lib/auth';
 import { createClient } from '@/lib/supabase/server';
@@ -7,8 +6,7 @@ import { apiSuccess, apiError, apiUnauthorized } from '@/lib/api-response';
 
 export const dynamic = 'force-dynamic';
 
-const BUCKET = 'images';
-const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads');
+const BUCKET = 'property-images';
 
 export async function POST(request: NextRequest) {
   try {
@@ -27,31 +25,28 @@ export async function POST(request: NextRequest) {
       return apiError('Arquivo muito grande. Maximo 5MB.', 400);
     }
 
-    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
-      const supabase = await createClient();
-      const ext = path.extname(file.name) || '.jpg';
-      const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`;
-      const bytes = await file.arrayBuffer();
-      const { data, error } = await supabase.storage
-        .from(BUCKET)
-        .upload(filename, bytes, { contentType: file.type, upsert: false });
-
-      if (error) {
-        console.error('Supabase storage upload:', error);
-        return apiError(error.message || 'Erro no upload', 500);
-      }
-
-      const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(data.path);
-      return apiSuccess({ url: urlData.publicUrl }, 201);
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      return apiError('Storage nao configurado', 500);
     }
 
-    await mkdir(UPLOAD_DIR, { recursive: true });
+    const supabase = await createClient();
     const ext = path.extname(file.name) || '.jpg';
     const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`;
-    const filepath = path.join(UPLOAD_DIR, filename);
     const bytes = await file.arrayBuffer();
-    await writeFile(filepath, Buffer.from(bytes));
-    return apiSuccess({ url: `/uploads/${filename}` }, 201);
+    const { data, error } = await supabase.storage
+      .from(BUCKET)
+      .upload(filename, bytes, { contentType: file.type, upsert: false });
+
+    if (error) {
+      console.error('Supabase storage upload:', error);
+      if (error.message?.includes('Bucket') || error.message?.includes('not found')) {
+        return apiError(`Crie o bucket "${BUCKET}" no Supabase Storage.`, 500);
+      }
+      return apiError(error.message || 'Erro no upload', 500);
+    }
+
+    const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(data.path);
+    return apiSuccess({ url: urlData.publicUrl }, 201);
   } catch (e) {
     if ((e as Error).message === 'Unauthorized') return apiUnauthorized();
     console.error(e);

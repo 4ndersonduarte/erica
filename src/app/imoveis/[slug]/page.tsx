@@ -17,6 +17,10 @@ const base = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
 export const dynamic = 'force-dynamic';
 
+function getAbsoluteUrl(url: string) {
+  return new URL(url, base).toString();
+}
+
 async function getProperty(slug: string) {
   try {
     return await getPropertyBySlug(slug);
@@ -35,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!property) return { title: 'Imóvel não encontrado' };
   const title = `${property.title} | ${property.code}`;
   const description = property.description?.slice(0, 160) || `${property.type} em ${property.neighborhood}, ${property.city}. ${formatPrice(property.value)}`;
-  const image = property.images?.[0]?.url ? `${base}${property.images[0].url}` : undefined;
+  const image = property.images?.[0]?.url ? getAbsoluteUrl(property.images[0].url) : undefined;
   return {
     title,
     description,
