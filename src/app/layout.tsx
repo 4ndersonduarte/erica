@@ -12,8 +12,8 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: { default: 'Erica Imóveis | Imobiliária', template: '%s | Erica Imóveis' },
-  description: 'Encontre o imóvel ideal. Casas e apartamentos para venda e aluguel.',
+  title: { default: 'Aritana Terra Boa | Soluções Imobiliárias', template: '%s | Aritana Terra Boa' },
+  description: 'Casas, terrenos, chácaras e fazendas para venda e aluguel.',
   icons: { icon: '/favicon.svg' },
   openGraph: {
     type: 'website',

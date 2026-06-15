@@ -25,7 +25,7 @@ export default function PoliticaDePrivacidadePage() {
                 Ao enviar uma proposta pelo WhatsApp, a mensagem é aberta no aplicativo com os dados preenchidos por você. O envio final acontece dentro do WhatsApp.
               </p>
               <p>
-                Você pode solicitar correção ou remoção dos seus dados entrando em contato pelos canais oficiais da Erica Imóveis.
+                Você pode solicitar correção ou remoção dos seus dados entrando em contato pelos canais oficiais da Aritana.
               </p>
             </div>
           </div>

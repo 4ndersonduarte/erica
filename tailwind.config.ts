@@ -10,21 +10,21 @@ const config: Config = {
     extend: {
       colors: {
         ink: {
-          DEFAULT: '#111827',
-          light: '#1f2937',
-          muted: '#4b5563',
-          subtle: '#6b7280',
+          DEFAULT: '#1f2921',
+          light: '#314235',
+          muted: '#536257',
+          subtle: '#718076',
         },
         cream: {
-          DEFAULT: '#f8f7f4',
-          dark: '#efede8',
-          border: '#e4ded4',
+          DEFAULT: '#f7f5ed',
+          dark: '#ece8dc',
+          border: '#ddd8c9',
         },
         accent: {
-          DEFAULT: '#9a6a3a',
-          hover: '#7c532b',
-          light: '#f3ebe1',
-          muted: '#6f5131',
+          DEFAULT: '#2f7d42',
+          hover: '#245f33',
+          light: '#e7f2e8',
+          muted: '#4f6f54',
         },
         gold: {
           DEFAULT: '#fe6212',

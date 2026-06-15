@@ -26,10 +26,10 @@ export default function AdminNav() {
       <div className="container-custom flex min-h-[72px] flex-col gap-3 py-3 sm:min-h-[78px] sm:flex-row sm:items-center sm:justify-between">
         <Link href="/admin/dashboard" className="flex min-w-0 items-center gap-3">
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-ink text-sm font-semibold text-white">
-            EI
+            AT
           </span>
           <span className="min-w-0">
-            <span className="block text-sm font-semibold tracking-tight text-ink">Erica Imóveis</span>
+            <span className="block text-sm font-semibold tracking-tight text-ink">Aritana Terra Boa</span>
             <span className="block text-xs text-ink-subtle">Painel administrativo</span>
           </span>
         </Link>

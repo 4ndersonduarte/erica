@@ -8,7 +8,7 @@ export default async function AdminLayout({
 }) {
   const session = await getSession();
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-white">
       {session && <AdminNav />}
       <main className={session ? 'container-custom max-w-6xl py-6 sm:py-8' : ''}>
         {children}

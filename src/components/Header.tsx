@@ -9,7 +9,7 @@ import { ChevronDown, Menu, X } from 'lucide-react';
 const navMain = [
   { href: '/', label: 'Início' },
   { href: '/imoveis', label: 'Imóveis' },
-  { href: '/#porque-terra-boa', label: 'Por que Terra Boa' },
+  { href: '/#porque-terra-boa', label: 'Por que Aritana' },
   { href: '/#sobre', label: 'Sobre' },
   { href: '/anunciar-imovel', label: 'Anunciar' },
   { href: '/#contato', label: 'Contato' },
@@ -73,18 +73,18 @@ export default function Header() {
   );
 
   return (
-    <header className="sticky top-0 z-50 border-b border-cream-border/80 bg-white/90 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-cream-border bg-white">
       <div className="container-custom flex min-h-[84px] items-center justify-between py-2 sm:min-h-[98px]">
         <Link
           href="/"
           className="flex items-center gap-2 text-ink transition-opacity hover:opacity-90"
         >
           <Image
-            src="/erica.png"
-            alt="Erica Imóveis"
-            width={378}
-            height={119}
-            className="h-[70px] w-auto object-contain sm:h-[86px]"
+            src="/logo-aritana.png"
+            alt="Aritana Terra Boa - Soluções Imobiliárias"
+            width={1200}
+            height={1046}
+            className="h-[72px] w-auto object-contain sm:h-[88px]"
             priority
           />
         </Link>

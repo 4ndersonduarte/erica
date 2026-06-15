@@ -4,16 +4,16 @@ import RegisterForm from '@/components/admin/RegisterForm';
 
 export default function RegisterPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-cream px-4 py-10">
+    <div className="flex min-h-screen items-center justify-center bg-white px-4 py-10">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <Link href="/" className="inline-block">
             <Image
-              src="/erica.png"
-              alt="Erica Imóveis"
-              width={288}
-              height={92}
-              className="mx-auto h-[77px] w-auto object-contain"
+              src="/logo-aritana.png"
+              alt="Aritana Terra Boa"
+              width={1200}
+              height={1046}
+              className="mx-auto h-40 w-auto object-contain"
             />
           </Link>
           <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-accent">

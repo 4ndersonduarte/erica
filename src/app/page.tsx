@@ -22,7 +22,7 @@ function cleanWa(n: string) {
 }
 
 const msgErica = encodeURIComponent(
-  'Olá! Vim pelo site da Erica Imóveis e gostaria de mais informações.'
+  'Olá! Vim pelo site da Aritana e gostaria de mais informações.'
 );
 
 async function getHomeProperties() {
@@ -64,25 +64,25 @@ export default async function HomePage() {
         <section className="relative flex min-h-[78vh] flex-col justify-end overflow-hidden pb-8 pt-24 sm:min-h-[82vh] sm:pb-16 sm:pt-32">
           <div className="absolute inset-0">
             <Image
-              src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920"
-              alt=""
+              src="/hero-chacara.jpg"
+              alt="Chácara com lago, casa e ampla área verde"
               fill
-              className="object-cover"
+              className="object-cover object-[center_58%]"
               priority
               sizes="100vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/40 to-ink/20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/45 to-ink/15" />
           </div>
           <div className="container-custom relative z-10">
             <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-white/75 sm:text-sm">
-              Parceria Erica Imóveis e Terra Boa
+              Aritana Terra Boa · Soluções Imobiliárias
             </p>
             <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-white text-balance sm:text-display">
-              Encontre o imóvel ideal para você
+              Encontre o imóvel ideal para cada momento
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">
-              Terrenos, casas, fazendas e chácaras. Atendimento personalizado e
-              transparência em cada negociação.
+              Casas, terrenos, chácaras e fazendas selecionadas para morar,
+              investir ou realizar novos projetos.
             </p>
             <div className="mt-8 max-w-4xl sm:mt-10">
               <div className="rounded-lg border border-white/25 bg-white/95 p-3 shadow-elevated backdrop-blur-md sm:p-4">
@@ -159,7 +159,7 @@ export default async function HomePage() {
               Por que nos escolher
             </p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-              Por que escolher a Imobiliária Terra Boa?
+              Por que escolher a Aritana?
             </h2>
             <ul className="mt-8 grid max-w-3xl list-none gap-3 sm:grid-cols-2">
               {[
@@ -224,12 +224,12 @@ export default async function HomePage() {
               Sobre
             </p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-              Sobre a Imobiliária Terra Boa
+              Sobre a Aritana
             </h2>
             <div className="mt-6 max-w-2xl space-y-4 text-base leading-relaxed text-ink-muted sm:text-lg">
               <p>
-                A Imobiliária Terra Boa nasceu com o propósito de conectar
-                pessoas às melhores oportunidades do mercado imobiliário.
+                A Aritana conecta pessoas às melhores oportunidades do mercado
+                imobiliário, reunindo opções urbanas e rurais para diferentes objetivos.
               </p>
               <p>
                 Trabalhamos com dedicação para oferecer imóveis que atendam às

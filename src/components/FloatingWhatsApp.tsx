@@ -11,7 +11,7 @@ function cleanNumber(n: string) {
   return n.replace(/\D/g, '');
 }
 
-const msgErica = encodeURIComponent('Olá! Vim pelo site da Erica Imóveis e gostaria de mais informações.');
+const msgErica = encodeURIComponent('Olá! Vim pelo site da Aritana e gostaria de mais informações.');
 
 export default function FloatingWhatsApp() {
   const [open, setOpen] = useState(false);
